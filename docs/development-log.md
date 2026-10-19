@@ -17,3 +17,12 @@
 - Added pointer-enter expression and sound feedback.
 - Validated inline JavaScript syntax; browser/device QA still required.
 - Based on repository R2.6 adaptation; original in-chat prototype not imported byte-for-byte.
+
+## 2026-10-20 — R2.8 Idle Curiosity / Response Bank
+- Slower irritation, anger, dizziness, and wobble recovery.
+- Autonomous randomized idle actions: looking, wandering, pondering, blinking, resting, curious investigation.
+- 20 randomized lines for each of seven mood categories (140 total): neutral, happy, curious, suspicious, angry, dizzy, sleepy.
+- Curious asymmetrical eye opening/tilt, gaze and curved approach.
+- Removed background grid; small left-aligned stacked telemetry restored as a visible overlay.
+- Referred to the repository R2.6 design language; exact original in-chat R2.6 frame source unavailable, so not claimed as a literal match.
+- JavaScript parse check passed; device/browser behavior QA pending.
