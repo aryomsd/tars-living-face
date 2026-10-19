@@ -6,3 +6,14 @@
 - Added standalone touch-compatible browser demo without dependencies.
 - Maintained R2.4 locked baseline **as a reference only**; original source has not been imported.
 - Pending PR merge, GitHub Pages enablement and device testing.
+
+## 2026-10-20 — R2.7 Mobile UX iteration
+- Expanded immersive mobile stage to viewport height while keeping 1020×600 canvas aspect ratio intact (letterboxing where necessary).
+- Settings converted to collapsible details panel.
+- Restored background processing/telemetry feed behind the canvas.
+- Audio defaults ON and volume 100%; browsers may require first interaction to unlock Web Audio and speech.
+- Added sparse procedural audio cues for blinking, movement, touch, proximity, processing, scan, giggle and rumble.
+- Introduced engagement/excitement/irritation state with slower escalation, gradual cooldown, and mood-based approach/avoidance.
+- Added pointer-enter expression and sound feedback.
+- Validated inline JavaScript syntax; browser/device QA still required.
+- Based on repository R2.6 adaptation; original in-chat prototype not imported byte-for-byte.
