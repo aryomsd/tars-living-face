@@ -26,3 +26,11 @@
 - Removed background grid; small left-aligned stacked telemetry restored as a visible overlay.
 - Referred to the repository R2.6 design language; exact original in-chat R2.6 frame source unavailable, so not claimed as a literal match.
 - JavaScript parse check passed; device/browser behavior QA pending.
+
+## 2026-10-20 — R2.9 Portrait / Tilt / Single Frame
+- Responsive canvas backing-store with uniform 1020×600 scene transform; face geometry is never stretched.
+- Portrait screen fills nearly the available viewport while retaining bottom scroll access to controls.
+- Removed the inner canvas border; single outer frame. Processing telemetry overlays same frame and scrolls to newest entries (up to 60 lines).
+- Opt-in DeviceOrientation tilt via ENABLE TILT; requests iOS permission on click, gracefully handles unsupported devices.
+- Tilt influences gaze and drifting behavior without replacing pointer/drag interactions.
+- Syntax checked via JavaScript parser; physical phone sensor and layout QA pending.
