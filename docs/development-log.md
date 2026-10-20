@@ -34,3 +34,9 @@
 - Opt-in DeviceOrientation tilt via ENABLE TILT; requests iOS permission on click, gracefully handles unsupported devices.
 - Tilt influences gaze and drifting behavior without replacing pointer/drag interactions.
 - Syntax checked via JavaScript parser; physical phone sensor and layout QA pending.
+
+## 2026-10-20 — R2.10 Full Canvas / Gravity Tilt / Engine Trace
+- Portrait canvas now uses the entire frame backing store as an interactive scene; uniform world scale preserves eye/ring proportions while worldTop/worldBottom extend available movement vertically.
+- Tilt uses calibrated relative orientation, weaker vertical force, mood-weighted gravity impulses, short burst then recalibration and release; sustained extreme tilt can trigger dizziness/irritation.
+- Terminal is dimmed to 36% opacity and randomized variable-length synthetic technical traces plus actual engine state labels.
+- Inline JS parser check passed. Device QA remains necessary, especially iOS sensor permission and extreme portrait sizes.
