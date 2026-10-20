@@ -40,3 +40,10 @@
 - Tilt uses calibrated relative orientation, weaker vertical force, mood-weighted gravity impulses, short burst then recalibration and release; sustained extreme tilt can trigger dizziness/irritation.
 - Terminal is dimmed to 36% opacity and randomized variable-length synthetic technical traces plus actual engine state labels.
 - Inline JS parser check passed. Device QA remains necessary, especially iOS sensor permission and extreme portrait sizes.
+
+## 2026-10-20 — R2.11 Gravity Bounce / Organic Terminal / Expressive Speech
+- Stronger lateral tilt fall and damped collision bounce; variable fast/slow spring recovery, mood-weighted inertia, weaker vertical tilt.
+- Gyroscope automatically enabled where browser permits; iOS permission-gated browsers retain a tap-to-enable path.
+- Terminal trace cadence now bursty, quiet or rapid depending on interaction/gyro/mood; mixed-length lines.
+- Expanded idle dialogue with longer, expressive, mood-specific lines; browser SpeechSynthesis pacing and pitch vary with mood (not ChatGPT-generated live speech).
+- JavaScript parse verified; physical device/browser QA outstanding.
