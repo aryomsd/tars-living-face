@@ -47,3 +47,9 @@
 - Terminal trace cadence now bursty, quiet or rapid depending on interaction/gyro/mood; mixed-length lines.
 - Expanded idle dialogue with longer, expressive, mood-specific lines; browser SpeechSynthesis pacing and pitch vary with mood (not ChatGPT-generated live speech).
 - JavaScript parse verified; physical device/browser QA outstanding.
+
+## 2026-10-24 — R2.12 Physics Body v1 (experimental)
+- Introduced independent body physics displacement and velocity, separated from route target.
+- Gyro drives gravity force; inertia, damping, collision clamping, randomized restitution and spring-to-center recovery drive physical response.
+- Idle route is paused during active physics, with existing neck/ring springs preserved. RESET clears physics.
+- JavaScript syntax validated; mobile/browser runtime testing not performed. R2.11 remains recoverable in Git history.
