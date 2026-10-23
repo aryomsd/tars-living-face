@@ -59,3 +59,8 @@
 - Neck outer ring serves as visible tilt collision boundary with damped recoil.
 - Introduced slowly changing joy, stress, boredom, sulking and play interactions. Gentle drags improve affection; rough prolonged shaking increases stress. Mood transitions evaluated at slower intervals; sulking blocks immediate cheerful expressions.
 - Inline JS syntax validated. Physical device/browser behavior QA pending. R2.12 preserved in Git history.
+
+## 2026-10-24 — R2.14 Contextual Expressive Speech
+- Mood-sensitive browser SpeechSynthesis profiles with light pitch/rate variation and English local-voice preference where available.
+- Event-aware speech pools for tap, gentle pet, rough play, sulking, boredom, tilt, and balance recovery. Per-event repetition avoidance and global cooldown.
+- Existing status/log/terminal UI retained. Audio remains browser TTS (not generative voice). JavaScript syntax validated; physical-device and voice runtime QA pending.
