@@ -64,3 +64,9 @@
 - Mood-sensitive browser SpeechSynthesis profiles with light pitch/rate variation and English local-voice preference where available.
 - Event-aware speech pools for tap, gentle pet, rough play, sulking, boredom, tilt, and balance recovery. Per-event repetition avoidance and global cooldown.
 - Existing status/log/terminal UI retained. Audio remains browser TTS (not generative voice). JavaScript syntax validated; physical-device and voice runtime QA pending.
+
+## 2026-10-24 — R2.15 Emergent Personality (experimental)
+- Added session-scoped trust, play drive, caution, curiosity, confidence, recent event history, and pointer awareness.
+- Gentle interaction grows trust; rough interaction grows caution. Pointer taps stimulate play drive.
+- Weighted behavior decisions choose approach, retreat, investigate, play, rest, or observe based on recent context and temperament. Behaviors use existing route/face/expression/voice engines.
+- RESET clears persona. No persistence or machine learning claimed. JavaScript syntax validated; browser runtime QA pending.
