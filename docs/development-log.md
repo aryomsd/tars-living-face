@@ -53,3 +53,9 @@
 - Gyro drives gravity force; inertia, damping, collision clamping, randomized restitution and spring-to-center recovery drive physical response.
 - Idle route is paused during active physics, with existing neck/ring springs preserved. RESET clears physics.
 - JavaScript syntax validated; mobile/browser runtime testing not performed. R2.11 remains recoverable in Git history.
+
+## 2026-10-24 — R2.13 Neck-first dynamics and kitten personality
+- Ring 1 + ring 2 are the coupled neck, limited to 13 logical units apart. Eye-center may move only ~68 units relative to outer ring, equivalent to approximately half an eye reaching ring boundary. Normal movement pulls neck behind eyes; tilt moves neck first and constrains eyes to follow.
+- Neck outer ring serves as visible tilt collision boundary with damped recoil.
+- Introduced slowly changing joy, stress, boredom, sulking and play interactions. Gentle drags improve affection; rough prolonged shaking increases stress. Mood transitions evaluated at slower intervals; sulking blocks immediate cheerful expressions.
+- Inline JS syntax validated. Physical device/browser behavior QA pending. R2.12 preserved in Git history.
