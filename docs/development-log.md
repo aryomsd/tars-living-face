@@ -92,3 +92,9 @@
 - Replaced fixed Z scale with depthScale() based on the shorter logical canvas side. Outer ring/tick diameter (328 units) maps to 10% at z=-1, 55% at z=0 and 80% at z=+1. All ring rendering and collision radius share this scale.
 - Increased occasional approach/retreat depth targets toward ±1; ordinary depth sampling remains concentrated near center. Mood and escalation logic unchanged.
 - JS syntax check passed. Browser/device QA pending; small viewports and scale extremes should be verified.
+
+## 2026-10-24 — R2.19 Expressive Z Antics
+- Contextual depthGesture state machine with cooldowns and independent spring presets (fast jump, slow intimidation, slow shrinking).
+- Playful pointer proximity can trigger two-phase Z pounce or rare BOO surprise, with a cursor-directed XY slingshot for pounce.
+- Provocation escalation can trigger slow looming/intimidation or deep dizzy retreat. Fearful retreat can trigger hide. Existing normal center-biased Z remains default.
+- Gesture cooldown roughly 11–22 seconds, BOO 23–43 seconds. JS syntax validated; real browser/device interaction QA pending.
