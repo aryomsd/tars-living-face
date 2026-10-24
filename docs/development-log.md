@@ -175,3 +175,9 @@
 - Suggested roadmap: P1 persistent identity/personality; P2 pairing, social messaging, jump/return lifecycle; P3 opt-in GPS social radar and background tier rendering; P4 proximity bridge and device testing.
 - Potential backend: Cloudflare Workers / Durable Objects, pending technical validation.
 - This entry records product requirements only; no new feature implementation or live proximity tests.
+
+## 2026-10-25 — R2.31 Depth Range
+- Normal autonomous depth centered at z=.30 with gentle variation .20–.40; reset/start also .30.
+- Depth scale maps extreme z=-1 to 5% and z=+1 to 120% of short-side reference canvas, while normal z=.30 is 57%.
+- Behavior-orchestrated positive/negative depth kept near normal; dramatic explicit gestures retain extreme zoom range.
+- Original R2.30 eyes unchanged. JavaScript syntax PASS; browser visual QA pending.
