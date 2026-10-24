@@ -53,7 +53,7 @@ function depthKinetics(){let mode=drag?'dragging':depth.mode==='fast'?'snappy':d
 function depthScale(){let shortSide=Math.min(1020,worldBottom-worldTop),baseDiameter=328;let nominal=shortSide/baseDiameter;return depth.z<0?nominal*(.55+depth.z*.45):nominal*(.55+depth.z*.25)}
 function depthGesture(kind,t=time()){if(t<depth.cooldown||drag||body.active)return false;depth.action=kind;depth.phase=0;depth.phaseUntil=t;depth.mode=kind==='boo'||kind==='pounce'?'fast':kind==='intimidate'?'slow':'shrink';depth.modeUntil=t+(kind==='intimidate'?4200:kind==='hide'?4500:kind==='dizzy'?5000:2500);depth.cooldown=t+rand(kind==='boo'?23000:11000,kind==='boo'?43000:22000);if(kind==='intimidate')cinematicCue('intimidate');else if(kind==='hide')cinematicCue('hide');else if(kind==='dizzy')cinematicCue('dizzy');return true}
 function animateDepthGesture(t){if(!depth.action)return;if(t<depth.phaseUntil)return;let kind=depth.action;if(depth.phase===0){depth.phase=1;if(kind==='boo'||kind==='pounce'){setDepth(-.38,true);depth.mode='fast';depth.phaseUntil=t+rand(180,330)}else{setDepth(kind==='intimidate'?.94:kind==='hide'?-1:-.94,true);depth.mode=kind==='intimidate'?'slow':'shrink';depth.phaseUntil=depth.modeUntil}}else if(depth.phase===1&&(kind==='boo'||kind==='pounce')){depth.phase=2;setDepth(kind==='boo'?1:.86,true);depth.mode='fast';depth.phaseUntil=t+rand(600,1050);if(kind==='boo'){show('surprised',1200);cinematicCue('boo',true);fx('rumble');prompt('BOO! / PROXIMITY SURPRISE',true)}else{show('glee',1700);cinematicCue('pounce');fx('move');plan(persona.pointerX,persona.pointerY,true,'slingshot')}}else{depth.action='';depth.mode='normal';depth.phase=0;depth.phaseUntil=0;depth.modeUntil=0;depth.nextGoal=t+rand(1800,3500);setDepth(depthSample())}}
-function depthSample(){let u=Math.random(),v=Math.random(),w=Math.random();return clamp((u+v+w-1.5)*.52,-.34,.34)}
+function depthSample(){let u=Math.random(),v=Math.random(),w=Math.random();return clamp((u+v+w-1.5)*.52,-.34,.17)}
 function provokeStage(t){agitation.lastProvoked=t;if(t-agitation.since>18000){agitation.stage=0;agitation.since=t}agitation.stage=Math.min(4,agitation.stage+1);return agitation.stage}
 
 // R2.24: A single, bounded expression package coordinates mood, eyes, XY, Z and voice.
@@ -85,7 +85,7 @@ function orchestrate(action,opts={}){
  orchestrator.until=now+(opts.duration||rand(1700,3300));
  if(opts.mood)mood=opts.mood;
  if(opts.eyes!==false)show(opts.eye||pkg.eye,opts.duration||2400);
- if(!depth.action&&opts.depth!==false)setDepth(pkg.z,true);
+ if(!depth.action&&opts.depth!==false)setDepth(pkg.z>0?pkg.z*.5:pkg.z,true);
  if(opts.target){plan(opts.target.x,opts.target.y,true,pkg.path);routeMood=pkg.motion;routeMs=({sleepy:2100,sluggish:1400,lazy:1050,normal:680,active:390,fast:250,snappy:170})[routeMood]/Math.max(1,route.length*.68)}
  if(pkg.voice&&opts.voice!==false&&now-orchestrator.lastVoice>19000&&Math.random()<(opts.voiceChance??.22)){if(cinematicCue(pkg.voice,urgent))orchestrator.lastVoice=now}
  return true;
@@ -160,44 +160,30 @@ function microOffset(t){
  return {x:micro.dx*ease,y:micro.dy*ease,tilt:micro.tilt*ease,squint:micro.squint*ease};
 }
 
-const organicEyes=[0,1].map(()=>({width:1,height:1,lean:0,bulge:0,offset:0,vw:0,vh:0,vl:0,vb:0,vo:0}));
-let eyeMotion={x:510,y:260,vx:0,vy:0};
-function eyeSpring(o,key,target,dt,k=145,d=17){
- const vk='v'+({width:'w',height:'h',lean:'l',bulge:'b',offset:'o'}[key]);
- const step=Math.min(dt,.025)/3;
- for(let n=0;n<3;n++){o[vk]+=((target-o[key])*k-o[vk]*d)*step;o[key]+=o[vk]*step}
-}
+
+const organicEyes=[0,1].map(()=>({w:1,h:1,round:4,arch:0,smile:0,shift:0,vw:0,vh:0,vr:0,va:0,vs:0,vt:0}));
+function eyeSpring(o,k,v,target,dt){let step=Math.min(dt,.025)/3;for(let n=0;n<3;n++){o[v]+=((target-o[k])*110-o[v]*16)*step;o[k]+=o[v]*step}}
 function updateOrganicEyes(dt,t){
- const speed=Math.hypot(face.vx,face.vy),impulse=clamp(speed/1400,0,1);
- const dx=clamp((face.x-eyeMotion.x)/85,-1,1),dy=clamp((face.y-eyeMotion.y)/85,-1,1);
- eyeMotion.x+=clamp(face.x-eyeMotion.x,-12,12)*Math.min(1,dt*14);
- eyeMotion.y+=clamp(face.y-eyeMotion.y,-12,12)*Math.min(1,dt*14);
- const shape={neutral:[1,1,0,0],happy:[1.1,.56,0,.14],glee:[1.13,.47,0,.24],angry:[1.16,.61,.28,.05],annoyed:[1.05,.7,.14,.03],confused:[1.02,.87,-.17,.08],sleepy:[1.1,.32,0,-.06],surprised:[1.08,1.23,0,.18],dizzy:[1.06,.84,0,.2],thinking:[.96,.81,-.08,.03]}[expression]||[1,1,0,0];
- organicEyes.forEach((o,i)=>{
-  const side=i===0?-1:1,lag=i===0?1:.87;
-  eyeSpring(o,'width',shape[0]*(1+impulse*.12),dt,155,18);
-  eyeSpring(o,'height',Math.max(.045,shape[1]*(1-impulse*.17))*(1-(i===0?.92:1.08)*microOffset(t).squint),dt,165,17);
-  eyeSpring(o,'lean',shape[2]*side+dx*.16+dy*.07*side,dt,120,15);
-  eyeSpring(o,'bulge',shape[3]+impulse*.17,dt,130,15);
-  eyeSpring(o,'offset',clamp(dx*7*lag,-9,9),dt,175,17);
+ const p=({neutral:[1,1,4,0,0],curious:[1,1.12,2.2,.12,0],happy:[1.04,.78,2.4,0,.6],glee:[1.08,.7,2.1,0,.85],angry:[1.05,.84,4.7,-.7,0],annoyed:[1,.8,4.4,-.5,0],suspicious:[1,.68,4.8,-.4,0],confused:[1,.96,2.7,.24,0],sleepy:[1,.5,3.7,0,.15],surprised:[1.06,1.2,1.8,0,0],dizzy:[1,.95,2.2,0,0],thinking:[1,.9,3.1,.2,0]})[expression]||[1,1,4,0,0];
+ organicEyes.forEach((o,i)=>{let side=i===0?-1:1,asym=expression==='confused'?(i===0?.7:1.12):1;
+ eyeSpring(o,'w','vw',p[0],dt);eyeSpring(o,'h','vh',Math.max(.1,p[1]*asym*(1-microOffset(t).squint)),dt);
+ eyeSpring(o,'round','vr',p[2],dt);eyeSpring(o,'arch','va',p[3]*side,dt);
+ eyeSpring(o,'smile','vs',p[4],dt);eyeSpring(o,'shift','vt',clamp(face.vx/500,-4,4),dt);
  });
 }
 function drawEye(i,t){
- const e=eye[i],o=organicEyes[i],quirk=microOffset(t),w=e.w*clamp(o.width,.65,1.45),h=Math.max(2,e.h*clamp(o.height,.025,1.45));
- const lean=clamp(o.lean,-.45,.45),bulge=clamp(o.bulge,-.2,.55);
- g.save();g.translate(face.x+e.x+quirk.x+o.offset,face.y+e.y+quirk.y);
- g.rotate(e.tilt+quirk.tilt+lean*.14);
- g.shadowColor='#57f4fa';g.shadowBlur=23;g.fillStyle='#4be8f0';
- const top=-h*.5,bottom=h*.5,left=-w*.5,right=w*.5;
- g.beginPath();g.moveTo(0,top-h*bulge*.18);
- g.bezierCurveTo(w*.32,top-h*(.04+bulge*.22),right,top+h*.13+lean*h*.25,right,bottom-h*.23);
- g.bezierCurveTo(right,bottom+h*bulge*.18,w*.28,bottom+h*(.04+bulge*.12),0,bottom+h*bulge*.12);
- g.bezierCurveTo(-w*.28,bottom+h*(.04+bulge*.12),left,bottom+h*bulge*.18,left,top+h*.13-lean*h*.25);
- g.bezierCurveTo(left,top-h*(.04+bulge*.22),-w*.32,top-h*bulge*.18,0,top-h*bulge*.18);
- g.closePath();g.fill();g.shadowBlur=0;
- g.save();g.clip();g.fillStyle='rgba(255,255,255,.52)';rounded(-w*.28,-h*.31,w*.5,Math.max(1.4,h*.06),2);g.fill();
- if(dizzy>.16){g.strokeStyle='rgba(1,31,39,.8)';g.lineWidth=2.8;g.beginPath();for(let n=0;n<90;n++){let a=n*.24+t*.009*(i===0?1:-1),r=n/90*Math.min(w,h)*.43;if(n===0)g.moveTo(Math.cos(a)*r,Math.sin(a)*r);else g.lineTo(Math.cos(a)*r,Math.sin(a)*r)}g.stroke()}
- g.restore();g.restore();
+ const e=eye[i],o=organicEyes[i],q=microOffset(t),w=e.w*clamp(o.w,.75,1.25),h=Math.max(3,e.h*clamp(o.h,.1,1.3)),power=clamp(o.round,1.6,5.5);
+ g.save();g.translate(face.x+e.x+q.x+o.shift,face.y+e.y+q.y);
+ g.shadowColor='#57f4fa';g.shadowBlur=20;g.fillStyle='#4be8f0';g.beginPath();
+ for(let n=0;n<=80;n++){let a=-Math.PI/2+n*Math.PI*2/80,c=Math.cos(a),si=Math.sin(a);
+ let x=Math.sign(c)*Math.pow(Math.abs(c),2/power)*w*.5;
+ let y=Math.sign(si)*Math.pow(Math.abs(si),2/power)*h*.5;
+ let influence=Math.max(0,1-(x/(w*.5))**2);
+ if(si<0)y+=o.arch*h*.3*influence;else y-=o.smile*h*.4*influence;
+ if(n===0)g.moveTo(x,y);else g.lineTo(x,y);
+ }g.closePath();g.fill();g.shadowBlur=0;
+ if(dizzy>.16){g.save();g.clip();g.strokeStyle='rgba(1,31,39,.8)';g.lineWidth=2.5;g.beginPath();for(let n=0;n<80;n++){let a=n*.24+t*.009*(i===0?1:-1),rr=n/80*Math.min(w,h)*.4;if(n===0)g.moveTo(Math.cos(a)*rr,Math.sin(a)*rr);else g.lineTo(Math.cos(a)*rr,Math.sin(a)*rr)}g.stroke();g.restore()}
+ g.restore();
 }
 function update(t){fitCanvas();microTick(t);let dt=clamp((t-last)/1000,.001,.022);last=t;updateOrganicEyes(dt,t);animateDepthGesture(t);if(t>depth.nextGoal&&!depth.action&&!drag&&!body.active){depth.nextGoal=t+rand(5500,10500);if(Math.random()<.7)setDepth(depthSample())}if(agitation.stage&&t-agitation.lastProvoked>20000){agitation.stage=0;agitation.since=0}decideBehavior(t);{let [stiffness,damping,maxSpeed]=depthKinetics();for(let k=0;k<3;k++){let h=dt/3,accel=(depth.goal-depth.z)*stiffness-depth.vz*damping;depth.vz=clamp(depth.vz+accel*h,-maxSpeed,maxSpeed);depth.z+=depth.vz*h;if(depth.z>1||depth.z< -1){depth.z=clamp(depth.z,-1,1);depth.vz*=-.22}}}bond.stress=Math.max(0,bond.stress-dt*.008);bond.joy=clamp(bond.joy+(bond.joy>.48?-.004:.003)*dt,0,1);bond.boredom=clamp(bond.boredom+dt*(t-bond.lastPlay>18000?.007:.001),0,1);if(t-bond.lastMood>16000&&!drag&&!body.active){bond.lastMood=t;if(t<bond.sulkUntil){mood='suspicious';show('suspicious',rand(5600,9800))}else if(bond.stress>.8){mood='angry';show('angry',rand(4200,7700))}else if(bond.boredom>.75){if(t-voiceState.lastAt>19000)sayEvent('bored');mood='sleepy';show('sleepy',rand(4900,9100))}else if(bond.joy>.65){mood='happy';show(pick(['happy','glee','curious']),rand(4200,9100))}else{mood='curious';show(pick(['neutral','curious','suspicious']),rand(3900,7300))}}if(!drag&&!body.active&&routeI<route.length){let u=(t-routeT)/routeMs;if(u>=1){routeI++;routeT=t;u=0}if(routeI<route.length){let ease=routeMood==='snappy'?1-(1-u)**4:routeMood==='sleepy'?u*u*(3-2*u):u*u*(3-2*u);target=curve(route[routeI][0],route[routeI][1],route[routeI][2],route[routeI][3],ease)}}else if(!drag&&!body.active&&t>nextWander&&t-persona.lastDecision>1700){if(Math.random()<.22&&bond.boredom>.55){plan(rand(320,700),rand(worldTop+170,worldBottom-170),false)}nextWander=t+rand(5500,10500)}
 const hz=drag?7:({sleepy:1.4,sluggish:1.9,lazy:2.7,normal:4.5,active:6.5,fast:8.5,snappy:10.5})[routeMood];for(let k=0;k<3;k++){let h=dt/3,fall=body.active&&t<body.until;
@@ -262,7 +248,7 @@ g.save();{let scale=depthScale(),anchorX=face.x,anchorY=face.y;g.translate(ancho
  }
 }
 g.restore()});
-drawEye(0,t);drawEye(1,t);g.restore();g.textAlign='center';g.fillStyle='#81b8be';g.fillText('TARS · R2.28 · '+expression.toUpperCase()+' / DEPTH '+depth.z.toFixed(2),510,worldBottom-34);g.textAlign='left';for(let y=worldTop;y<worldBottom;y+=4){g.fillStyle='rgba(0,0,0,.13)';g.fillRect(0,y,1020,1)}if(document.body.contains(canvas))requestAnimationFrame(safeFrame)}
+drawEye(0,t);drawEye(1,t);g.restore();g.textAlign='center';g.fillStyle='#81b8be';g.fillText('TARS · R2.29 · '+expression.toUpperCase()+' / DEPTH '+depth.z.toFixed(2),510,worldBottom-34);g.textAlign='left';for(let y=worldTop;y<worldBottom;y+=4){g.fillStyle='rgba(0,0,0,.13)';g.fillRect(0,y,1020,1)}if(document.body.contains(canvas))requestAnimationFrame(safeFrame)}
 prompt('BOOT SEQUENCE / KINEMATICS READY');blink=time()+2500;
 let frames=0;
 function safeFrame(t){try{update(t);frames++;if(frames===2)document.getElementById('status').textContent='TARS ONLINE — drag, flick, or tap a command';}catch(err){document.getElementById('status').textContent='TARS ERROR: '+err.message;document.getElementById('mood').textContent='RUNTIME ERROR';console.error(err);}}
