@@ -150,3 +150,8 @@
 - Spring-damped width, height, lean, bulge, and horizontal offset channels; independent per-eye response and movement-triggered squash/stretch.
 - Existing expression states supply continuously interpolated target parameters; original eye colors, motion, rings and behavior retained.
 - JavaScript syntax PASS; live visual/browser QA pending.
+
+## 2026-10-25 — R2.29 Eye Shape Rework
+- Removed slanted Bézier/squash-centric eye contours. Continuous spring interpolation now drives superellipse roundness, independent top arch and bottom smile contours, plus height/width. No eye rotation.
+- Reduced autonomous positive depth maximum from .34 to .17 (~50%); halved positive behavior-driven depth targets. Explicit dramatic proximity gestures retained.
+- JS syntax PASS. Browser visual QA pending.
