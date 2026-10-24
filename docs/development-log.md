@@ -76,3 +76,8 @@
 - Personality decisions drive depth approach/retreat/play/rest/investigate. Gentle interaction brings face closer; stressful interaction retreats.
 - Depth changes are visual-only; 2D pointer hit testing and neck/edge collision remain in original logical coordinates. This limitation requires device QA, especially at large scale.
 - JavaScript syntax validated; browser and device QA pending.
+
+## 2026-10-24 — R2.16.1 Neck tether and edge rebound hotfix
+- User visual reference revealed excessive eye-to-ring separation. Tightened tether to 38 logical units and made correction full-strength; fall mode clamps eyes to outer ring.
+- Edge collisions use outer-ring radius scaled with Z depth; neck/eyes translated together on contact. Increased body restitution (horizontal ~0.65–0.85; vertical 0.70) and added stronger visual impact cues.
+- JavaScript syntax check passed. Device/visual QA not performed; edge behavior requires user verification.
