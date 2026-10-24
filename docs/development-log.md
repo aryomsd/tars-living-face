@@ -120,3 +120,10 @@
 - Ring rendering adds bounded local elliptical deformation and subtle rotation from relative ring/face velocity and Z velocity, including tick marks.
 - Z-axis now uses shared XY-named kinetic profiles (sleepy/sluggish/lazy/normal/active/fast/snappy/dragging), with explicit gesture overrides, three physics substeps, bounded velocity and damped boundary rebound.
 - JS syntax validated. Live device visual QA not yet performed; tune deformation and spring constants after user feedback.
+
+## 2026-10-24 — R2.24 Behavior Orchestrator
+- Introduced centralized `behaviorProfiles` and `orchestrate(action, opts)` expression packages coordinating eye shape, XY movement speed/path, Z goal, optional contextual voice.
+- Integrated autonomous choices (observe/investigate/approach/retreat/play/rest) with personality trust, curiosity, play drive, caution, stress and bounded cooldown.
+- Explicit GREET, JOKE, COMPLIMENT and escalating PROVOKE stages can request priority coordinated profiles; legacy gestures and direct tactile/gyro responses remain intact.
+- Protect active dragging, body impacts, existing Z gestures and sulking from unsolicited autonomous overrides; voice probability remains low.
+- JS syntax PASS; visual/browser/mobile behavioral QA pending. This is first-stage orchestration, not a full rewrite of legacy mood/event logic.
