@@ -87,3 +87,8 @@
 - Mood reassessment 11s → 16s (~45% slower); typical expression holds extended ~40%. Personality decision interval increased to 3.8–7.2s.
 - Repeated PROVOKE and sustained extreme tilt escalate annoyed → angry → confused → dizzy, with a 20s quiet reset. Dizzy no longer appears on first sustained tilt; stronger angled eye geometry added for annoyed/angry/confused.
 - JS syntax check passed; real browser/gyro/visual QA pending. Note Z scaling at very close distances can crowd the screen; collision uses scaled ring radius.
+
+## 2026-10-24 — R2.18 Canvas-relative Z extremes
+- Replaced fixed Z scale with depthScale() based on the shorter logical canvas side. Outer ring/tick diameter (328 units) maps to 10% at z=-1, 55% at z=0 and 80% at z=+1. All ring rendering and collision radius share this scale.
+- Increased occasional approach/retreat depth targets toward ±1; ordinary depth sampling remains concentrated near center. Mood and escalation logic unchanged.
+- JS syntax check passed. Browser/device QA pending; small viewports and scale extremes should be verified.
