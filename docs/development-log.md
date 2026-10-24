@@ -81,3 +81,9 @@
 - User visual reference revealed excessive eye-to-ring separation. Tightened tether to 38 logical units and made correction full-strength; fall mode clamps eyes to outer ring.
 - Edge collisions use outer-ring radius scaled with Z depth; neck/eyes translated together on contact. Increased body restitution (horizontal ~0.65–0.85; vertical 0.70) and added stronger visual impact cues.
 - JavaScript syntax check passed. Device/visual QA not performed; edge behavior requires user verification.
+
+## 2026-10-24 — R2.17 Depth Distribution & Emotion Escalation
+- Depth scaling widened from approximately 62–146% to 16–184% absolute envelope; ordinary sampled goals remain near neutral (depth -0.34..+0.34), with occasional personality-led excursions toward ±0.9. Visual scale now 1+0.84*z. Rare extremes; spring unchanged.
+- Mood reassessment 11s → 16s (~45% slower); typical expression holds extended ~40%. Personality decision interval increased to 3.8–7.2s.
+- Repeated PROVOKE and sustained extreme tilt escalate annoyed → angry → confused → dizzy, with a 20s quiet reset. Dizzy no longer appears on first sustained tilt; stronger angled eye geometry added for annoyed/angry/confused.
+- JS syntax check passed; real browser/gyro/visual QA pending. Note Z scaling at very close distances can crowd the screen; collision uses scaled ring radius.
