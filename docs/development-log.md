@@ -160,3 +160,18 @@
 - Restored exact R2.25 drawEye implementation; removed R2.28/R2.29 organic eye morphing engine and update call.
 - Kept R2.27 circle-style selector and R2.29 smaller autonomous face depth.
 - JS syntax PASS; browser QA pending.
+
+## 2026-10-25 — TARS Social Community v1 (approved concept; not implemented)
+- Preserve R2.30 original eye renderer and existing physics, ring choices, and smaller default face.
+- Each user owns a unique persistent TARS personality, identity, and encounter history; support later backup, transfer, and export/import.
+- Cross-platform focus: Android/iPhone first, with tablets and laptops. Opt-in GPS discovery shows active, discoverable nearby TARS as small animated background visitors; GPS is NOT a 50 cm ranging solution.
+- Proximity candidates require confirmation before relationship upgrades. Optional BLE/native proximity, UWB-compatible ranging, or QR pairing can support close encounters; network transports carry interaction messages.
+- TARS background characters can peek, wander, greet, or avoid according to mood, personality, and relationship; keep main face dominant and limit background crowding.
+- Community tiers: Tier 1 Stranger (never confirmed close), micro size, 20% opacity; Tier 2 Acquaintance (confirmed near, no nudge), small, 30%; Tier 3 Familiar (nudged, no jump), medium, 50%; Tier 4 Visitor (has jumped), larger, 60%; Tier 5 Bestie (special mutually approved relationship), large, 80%. Suggested relative sizes: 20/35/50/70/90% of maximum background avatar; sizes subject to visual tuning.
+- Relationship tier persists after devices separate; live presence and distance are separate states. Do not expose precise coordinates to other users.
+- Owner can request a jump; TARS can independently ask to visit based on mood. Initially require acceptance. Besties may have privileged spontaneous visit requests, subject to owner controls.
+- On approved visit, guest TARS disappears from its home canvas and appears alongside host TARS on target canvas. Home shows Away Visiting. On RETURN, disconnection, timeout, or confirmed separation, guest returns home. Prevent duplicate active instances and preserve relationship memories.
+- Near-field target around 50 cm is aspirational: BLE RSSI is noisy; use hysteresis/debounce and do not promise centimeter precision. Browser mobile location/background scanning has platform limitations; use freshness timeouts.
+- Suggested roadmap: P1 persistent identity/personality; P2 pairing, social messaging, jump/return lifecycle; P3 opt-in GPS social radar and background tier rendering; P4 proximity bridge and device testing.
+- Potential backend: Cloudflare Workers / Durable Objects, pending technical validation.
+- This entry records product requirements only; no new feature implementation or live proximity tests.
