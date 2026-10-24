@@ -100,9 +100,15 @@ else{point(face,clamp(target.x+body.x,135,885),clamp(target.y+body.y,worldTop+15
 let speed=Math.hypot(face.vx,face.vy),energy=clamp(speed/1700,0,1);
 point(inner,neck.x,neck.y,8,.88,h);point(outer,neck.x,neck.y,5.8,.85,h);
 let ringGap=Math.hypot(outer.x-inner.x,outer.y-inner.y);if(ringGap>13){outer.x=inner.x+(outer.x-inner.x)*13/ringGap;outer.y=inner.y+(outer.y-inner.y)*13/ringGap;outer.vx*=.7;outer.vy*=.7}
-let dx=face.x-outer.x,dy=face.y-outer.y,dist=Math.hypot(dx,dy),limit=68;
-if(dist>limit){let ux=dx/dist,uy=dy/dist,excess=dist-limit;if(fall){face.x=outer.x+ux*limit;face.y=outer.y+uy*limit;face.vx=neck.vx*.78;face.vy=neck.vy*.78}else{outer.x+=ux*excess*.86;outer.y+=uy*excess*.86;inner.x+=ux*excess*.86;inner.y+=uy*excess*.86;neck.x+=ux*excess*.86;neck.y+=uy*excess*.86;outer.vx+=face.vx*.12;outer.vy+=face.vy*.12}}
-if(fall){let edgeX=clamp(outer.x,155,865),edgeY=clamp(outer.y,worldTop+165,worldBottom-165);if(edgeX!==outer.x||edgeY!==outer.y){outer.x=edgeX;outer.y=edgeY;neck.x=edgeX;neck.y=edgeY;neck.vx*=-.3;neck.vy*=-.3;face.vx*=-.26;face.vy*=-.26;if(t-neckImpact>500){neckImpact=t;wobble=Math.max(wobble,.5);prompt('NECK / ELASTIC LIMIT',true)}}}
+let dx=face.x-outer.x,dy=face.y-outer.y,dist=Math.hypot(dx,dy),limit=38;
+if(dist>limit){let ux=dx/dist,uy=dy/dist,excess=dist-limit;if(fall){face.x=outer.x+ux*limit;face.y=outer.y+uy*limit;face.vx=neck.vx*.85;face.vy=neck.vy*.85}else{outer.x+=ux*excess;outer.y+=uy*excess;inner.x+=ux*excess;inner.y+=uy*excess;neck.x+=ux*excess;neck.y+=uy*excess;outer.vx+=face.vx*.22;outer.vy+=face.vy*.22}}
+if(fall){let scale=clamp(1+depth.z*.62,.62,1.46),radius=164*scale,edgeX=clamp(outer.x,radius,1020-radius),edgeY=clamp(outer.y,worldTop+radius,worldBottom-radius);
+if(edgeX!==outer.x||edgeY!==outer.y){let impactX=edgeX!==outer.x,impactY=edgeY!==outer.y,oldVX=neck.vx,oldVY=neck.vy,shiftX=edgeX-outer.x,shiftY=edgeY-outer.y;
+outer.x=edgeX;outer.y=edgeY;inner.x+=shiftX;inner.y+=shiftY;neck.x+=shiftX;neck.y+=shiftY;face.x+=shiftX;face.y+=shiftY;
+if(impactX){body.vx=-body.vx*.78;neck.vx=-oldVX*.68;face.vx=neck.vx*.9;body.x+=Math.sign(shiftX)*22}
+if(impactY){body.vy=-body.vy*.72;neck.vy=-oldVY*.64;face.vy=neck.vy*.9;body.y+=Math.sign(shiftY)*18}
+if(t-neckImpact>280){neckImpact=t;wobble=Math.max(wobble,.95);dizzy=clamp(dizzy+.09,0,1);show('surprised',800);fx('rumble');prompt('NECK / EDGE IMPACT / REBOUND',true)}}}
+
 }
 let lx=clamp((gaze.x-face.x)/350,-1,1),ly=clamp((gaze.y-face.y)/260,-1,1);
 for(let i=0;i<2;i++){let e=eye[i],sg=i===0?-1:1,depth=1-sg*lx*.16;let height=expression==='sleepy'?0.25:expression==='curious'?(i===0?1.15:.67):expression==='glee'?0.69:expression==='happy'?0.77:expression==='angry'?0.83:expression==='suspicious'?(i===0?0.67:0.93):expression==='surprised'?1.22:1; if(t<blinkEnd)height=.035;e.x+=(sg*(35-Math.abs(lx)*(sg*lx<0?7:2))+lx*12-e.x)*Math.min(1,dt*12);e.y+=(ly*10-e.y)*Math.min(1,dt*12);e.w+=(55*depth-e.w)*Math.min(1,dt*13);e.h+=(64*height*depth-e.h)*Math.min(1,dt*14);e.tilt+=(clamp(face.vx/3300,-.12,.12)+sg*lx*.07+(expression==='curious'?sg*.12:0)+wobble*Math.sin(t*.025+i)*.09-e.tilt)*Math.min(1,dt*9)}
@@ -122,10 +128,10 @@ if(!drag){let b=body,fall=tiltEnabled&&t<b.until,weight=mood==='sleepy'?.7:mood=
 let ax=fall?b.gx*4800*weight:-b.x*44*b.rate,ay=fall?b.gy*2700*weight:-b.y*44*b.rate;
 b.vx=clamp(b.vx+(ax-b.vx*(fall?2.1:b.rate*2.4))*dt,-1700,1700);b.vy=clamp(b.vy+(ay-b.vy*(fall?2.1:b.rate*2.4))*dt,-1300,1300);
 b.x+=b.vx*dt;b.y+=b.vy*dt;
-let cx=clamp(target.x,180,840),cy=clamp(target.y,worldTop+180,worldBottom-180),hit=false,lo=125-cx,hi=895-cx;
-if(b.x<lo){b.x=lo;if(b.vx<0){b.vx=-b.vx*rand(.24,.42);hit=true}}if(b.x>hi){b.x=hi;if(b.vx>0){b.vx=-b.vx*rand(.24,.42);hit=true}}
-lo=worldTop+145-cy;hi=worldBottom-145-cy;if(b.y<lo){b.y=lo;if(b.vy<0){b.vy=-b.vy*.28;hit=true}}if(b.y>hi){b.y=hi;if(b.vy>0){b.vy=-b.vy*.28;hit=true}}
-if(hit&&t-b.hit>350){b.hit=t;wobble=Math.max(wobble,.6);fx('rumble');prompt('BODY / IMPACT / REBOUND',true)}
+let scale=clamp(1+depth.z*.62,.62,1.46),radius=164*scale,cx=clamp(target.x,radius,1020-radius),cy=clamp(target.y,worldTop+radius,worldBottom-radius),hit=false,lo=radius-cx,hi=1020-radius-cx;
+if(b.x<lo){b.x=lo;if(b.vx<0){b.vx=-b.vx*rand(.65,.85);hit=true}}if(b.x>hi){b.x=hi;if(b.vx>0){b.vx=-b.vx*rand(.24,.42);hit=true}}
+lo=worldTop+radius-cy;hi=worldBottom-radius-cy;if(b.y<lo){b.y=lo;if(b.vy<0){b.vy=-b.vy*.7;hit=true}}if(b.y>hi){b.y=hi;if(b.vy>0){b.vy=-b.vy*.28;hit=true}}
+if(hit&&t-b.hit>350){b.hit=t;wobble=Math.max(wobble,.95);show('surprised',900);fx('rumble');prompt('BODY / IMPACT / REBOUND',true)}
 if(!fall&&Math.hypot(b.x,b.y)<2&&Math.hypot(b.vx,b.vy)<12){if(b.active&&Math.random()<.45)sayEvent('recover');b.x=b.y=b.vx=b.vy=0;b.active=false}
 }else{body.x=body.y=body.vx=body.vy=0;body.active=false;body.until=0}
 if(!terminalNext)terminalNext=t+rand(80,1300);if(t>=terminalNext){let active=drag||t<tiltUntil||dizzy>.3||anger>.3;terminalBurst=active?Math.floor(rand(2,7)):Math.random()<.2?Math.floor(rand(2,5)):1;for(let i=0;i<terminalBurst;i++)prompt(pick(['ENGINE TICK','FRAME '+Math.floor(t),'PROCESSING','KINEMATICS '+routeMood,'GYRO '+(tiltEnabled?'ARMED':'IDLE'),'SPRING / '+face.vx.toFixed(1)+' '+face.vy.toFixed(1)]),true);terminalNext=t+rand(active?70:250,active?550:3600)}
@@ -134,7 +140,7 @@ g.setTransform(1,0,0,1,0,0);g.fillStyle='#061013';g.fillRect(0,0,canvas.width,ca
 g.font='13px monospace';g.fillStyle='#3f6972';g.fillText('> TARS.EXE / LIVE',31,worldTop+42);g.fillText('> KINEMATICS '+routeMood.toUpperCase(),31,worldTop+60);
 g.save();{let scale=clamp(1+depth.z*.62,.62,1.46),anchorX=face.x,anchorY=face.y;g.translate(anchorX,anchorY);g.scale(scale,scale);g.translate(-anchorX,-anchorY)}
 [inner,outer].forEach((p,j)=>{let r=j===0?108:145;g.beginPath();g.arc(p.x,p.y,r,rings[j].a,rings[j].a+(j===0?4.5:5.15));g.lineWidth=j===0?3:2;g.strokeStyle=j===0?'#8be3e7':'#4a8f9a';g.stroke();if(j===1){for(let k=0;k<26;k++){let a=rings[j].a*.3+k*TAU/26;g.beginPath();g.moveTo(p.x+Math.cos(a)*151,p.y+Math.sin(a)*151);g.lineTo(p.x+Math.cos(a)*(k%4===0?164:157),p.y+Math.sin(a)*(k%4===0?164:157));g.stroke()}}});
-drawEye(0,t);drawEye(1,t);g.restore();g.textAlign='center';g.fillStyle='#81b8be';g.fillText('TARS · R2.16 · '+expression.toUpperCase()+' / DEPTH '+depth.z.toFixed(2),510,worldBottom-34);g.textAlign='left';for(let y=worldTop;y<worldBottom;y+=4){g.fillStyle='rgba(0,0,0,.13)';g.fillRect(0,y,1020,1)}if(document.body.contains(canvas))requestAnimationFrame(safeFrame)}
+drawEye(0,t);drawEye(1,t);g.restore();g.textAlign='center';g.fillStyle='#81b8be';g.fillText('TARS · R2.16.1 · '+expression.toUpperCase()+' / DEPTH '+depth.z.toFixed(2),510,worldBottom-34);g.textAlign='left';for(let y=worldTop;y<worldBottom;y+=4){g.fillStyle='rgba(0,0,0,.13)';g.fillRect(0,y,1020,1)}if(document.body.contains(canvas))requestAnimationFrame(safeFrame)}
 prompt('BOOT SEQUENCE / KINEMATICS READY');blink=time()+2500;
 let frames=0;
 function safeFrame(t){try{update(t);frames++;if(frames===2)document.getElementById('status').textContent='TARS ONLINE — drag, flick, or tap a command';}catch(err){document.getElementById('status').textContent='TARS ERROR: '+err.message;document.getElementById('mood').textContent='RUNTIME ERROR';console.error(err);}}
