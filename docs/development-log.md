@@ -139,3 +139,8 @@
 - Local files stay in browser memory as object URLs; nothing is uploaded or persisted. Existing remote clip manifest/TTS remains fallback.
 - Installation: download `tars_audio_starter_v1.zip` from ChatGPT, extract it, click LOAD AUDIO on live TARS and select all 12 WAVs from `audio/`. Click TEST CLIP; trigger GREET, JOKE, PROVOKE, SCAN to exercise routing. Browser audio activation requires interaction.
 - Syntax check PASS. Live visual/audio QA pending. No copyrighted movie clips uploaded.
+
+## 2026-10-25 — R2.27 Ring Style Options
+- Removed R2.26 local audio WAV loader and TEST CLIP experiment; original voice manifest and speech fallback remain unchanged.
+- Added RINGS selector in Settings: CLASSIC, MINIMAL, DASHED, TARGET, NONE. NONE hides both animated circles but retains eyes and physics. Ring rendering continues to follow depth and motion.
+- JavaScript syntax PASS. Visual browser QA pending.
