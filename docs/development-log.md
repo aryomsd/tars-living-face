@@ -155,3 +155,8 @@
 - Removed slanted Bézier/squash-centric eye contours. Continuous spring interpolation now drives superellipse roundness, independent top arch and bottom smile contours, plus height/width. No eye rotation.
 - Reduced autonomous positive depth maximum from .34 to .17 (~50%); halved positive behavior-driven depth targets. Explicit dramatic proximity gestures retained.
 - JS syntax PASS. Browser visual QA pending.
+
+## 2026-10-25 — R2.30 Restore Original Eyes
+- Restored exact R2.25 drawEye implementation; removed R2.28/R2.29 organic eye morphing engine and update call.
+- Kept R2.27 circle-style selector and R2.29 smaller autonomous face depth.
+- JS syntax PASS; browser QA pending.
