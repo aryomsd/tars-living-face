@@ -108,3 +108,9 @@
 - Added manifest-driven HTML Audio clip playback prioritized over browser TTS by event/mood, recent-clip avoidance, interruption behavior and TTS fallback.
 - Empty manifest intentionally ships without unlicensed Hollywood clips; see docs/voice-library.md for adding cleared assets.
 - JavaScript syntax check passed. Playback/browser/mobile QA pending.
+
+## 2026-10-24 — R2.22 First Real Recorded Voice Clips
+- Added three rights-cleared Wikimedia Commons speech clips to audio/manifest.json: two CC0 Boo variants (Dinoroki, EyobAbebe10) and a VOA US-public-domain Hello everyone greeting.
+- Added a strict Commons Special:Redirect/file OGG source allowance to the voice loader. The existing TTS fallback remains in place.
+- PlayPhrase movie/TV excerpts deliberately not imported: its stated educational/personal permissions do not authorize standalone public clip libraries and no API is provided.
+- JS syntax validated. Network playback / redirects / Android autoplay remain UNVERIFIED; remote Commons URLs may be blocked by browser or provider. No claim of Hollywood recordings.
