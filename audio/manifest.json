@@ -1,5 +1,43 @@
 {
-  "version": 1,
-  "description": "TARS curated voice clips. Only add files with confirmed permission for public playback.",
-  "clips": []
+  "version": 2,
+  "description": "Curated CC0/public domain speech recordings for public TARS playback; not Hollywood dialogue.",
+  "clips": [
+    {
+      "id": "boo-us-cc0",
+      "src": "https://commons.wikimedia.org/wiki/Special:Redirect/file/En-us-boo2.ogg",
+      "moods": [
+        "boo"
+      ],
+      "fallback": "Boo!",
+      "approved": true,
+      "source": "https://commons.wikimedia.org/wiki/File:En-us-boo2.ogg",
+      "author": "Dinoroki",
+      "license": "CC0 1.0"
+    },
+    {
+      "id": "boo-om-cc0",
+      "src": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Om-boo.ogg",
+      "moods": [
+        "boo"
+      ],
+      "fallback": "Boo!",
+      "approved": true,
+      "source": "https://commons.wikimedia.org/wiki/File:Om-boo.ogg",
+      "author": "EyobAbebe10",
+      "license": "CC0 1.0"
+    },
+    {
+      "id": "hello-voa-public-domain",
+      "src": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Hello%2C_everyone%21.ogg",
+      "moods": [
+        "return",
+        "happy"
+      ],
+      "fallback": "Hello, everyone!",
+      "approved": true,
+      "source": "https://commons.wikimedia.org/wiki/File:Hello,_everyone!.ogg",
+      "author": "Voice of America Learning English",
+      "license": "US public domain"
+    }
+  ]
 }
