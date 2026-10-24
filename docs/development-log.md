@@ -70,3 +70,9 @@
 - Gentle interaction grows trust; rough interaction grows caution. Pointer taps stimulate play drive.
 - Weighted behavior decisions choose approach, retreat, investigate, play, rest, or observe based on recent context and temperament. Behaviors use existing route/face/expression/voice engines.
 - RESET clears persona. No persistence or machine learning claimed. JavaScript syntax validated; browser runtime QA pending.
+
+## 2026-10-24 — R2.16 Living Depth
+- Added spring-driven simulated Z-axis depth, scale range approximately 0.62–1.46, applied as a single shared canvas transform to both eyes and both neck rings.
+- Personality decisions drive depth approach/retreat/play/rest/investigate. Gentle interaction brings face closer; stressful interaction retreats.
+- Depth changes are visual-only; 2D pointer hit testing and neck/edge collision remain in original logical coordinates. This limitation requires device QA, especially at large scale.
+- JavaScript syntax validated; browser and device QA pending.
