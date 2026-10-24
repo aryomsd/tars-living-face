@@ -114,3 +114,9 @@
 - Added a strict Commons Special:Redirect/file OGG source allowance to the voice loader. The existing TTS fallback remains in place.
 - PlayPhrase movie/TV excerpts deliberately not imported: its stated educational/personal permissions do not authorize standalone public clip libraries and no API is provided.
 - JS syntax validated. Network playback / redirects / Android autoplay remain UNVERIFIED; remote Commons URLs may be blocked by browser or provider. No claim of Hollywood recordings.
+
+## 2026-10-24 — R2.23 Elastic Kinetics
+- Neck inner/outer ring springs loosened (6.6/.69 and 4.7/.64), ring separation 13→19, face tether 38→43 for residual elastic bounce without long-tail behavior.
+- Ring rendering adds bounded local elliptical deformation and subtle rotation from relative ring/face velocity and Z velocity, including tick marks.
+- Z-axis now uses shared XY-named kinetic profiles (sleepy/sluggish/lazy/normal/active/fast/snappy/dragging), with explicit gesture overrides, three physics substeps, bounded velocity and damped boundary rebound.
+- JS syntax validated. Live device visual QA not yet performed; tune deformation and spring constants after user feedback.
