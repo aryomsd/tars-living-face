@@ -98,3 +98,8 @@
 - Playful pointer proximity can trigger two-phase Z pounce or rare BOO surprise, with a cursor-directed XY slingshot for pounce.
 - Provocation escalation can trigger slow looming/intimidation or deep dizzy retreat. Fearful retreat can trigger hide. Existing normal center-biased Z remains default.
 - Gesture cooldown roughly 11–22 seconds, BOO 23–43 seconds. JS syntax validated; real browser/device interaction QA pending.
+
+## 2026-10-24 — R2.20 Cinematic Synthetic Voice
+- Added original Hollywood-inspired cinematic dialogue pools for BOO, pounce, intimidation, hide, dizziness, confusion, anger, curiosity and play, with event-specific triggering and speech cooldown.
+- Browser SpeechSynthesis still used (no copyrighted film samples, no actor voice clone); shifted mood-dependent English TTS pitch/rate toward dry, understated delivery. Actual timbre varies by OS/browser installed voice.
+- Syntax check passed; audio quality, voice availability and browser-device QA pending.
