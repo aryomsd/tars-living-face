@@ -127,3 +127,9 @@
 - Explicit GREET, JOKE, COMPLIMENT and escalating PROVOKE stages can request priority coordinated profiles; legacy gestures and direct tactile/gyro responses remain intact.
 - Protect active dragging, body impacts, existing Z gestures and sulking from unsolicited autonomous overrides; voice probability remains low.
 - JS syntax PASS; visual/browser/mobile behavioral QA pending. This is first-stage orchestration, not a full rewrite of legacy mood/event logic.
+
+## 2026-10-25 — R2.25 Quiet Microbehaviors
+- Added non-verbal micro-ticks: subtle glances, side-eye, small eye tilt, squint, sleepy droop, blink and intentional pauses. Bounded offsets (~2–7px), eye tilt (~0.04–0.075rad), short holds and quiet gaps.
+- Suppress micro-ticks during drag, body impacts, active Z gestures and sulking. No extra voice or large body travel from ticks.
+- Reduced autonomous decision cadence and idle roaming; most unattended decisions now remain in place and cue a small eye tick instead. Reduced unsolicited BOO/pounce odds while preserving explicit commands and interactive responses.
+- JS syntax PASS; browser visual QA pending. Tune subtlety and animation cadence from live feedback.
