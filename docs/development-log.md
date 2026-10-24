@@ -133,3 +133,9 @@
 - Suppress micro-ticks during drag, body impacts, active Z gestures and sulking. No extra voice or large body travel from ticks.
 - Reduced autonomous decision cadence and idle roaming; most unattended decisions now remain in place and cue a small eye tick instead. Reduced unsolicited BOO/pounce odds while preserving explicit commands and interactive responses.
 - JS syntax PASS; browser visual QA pending. Tune subtlety and animation cadence from live feedback.
+
+## 2026-10-25 — R2.26 Local Audio Starter Integration
+- Added LOAD AUDIO multiple-file input for local WAV/OGG/MP3, TEST CLIP playback, count status and event/mood mappings for 12 original starter effects.
+- Local files stay in browser memory as object URLs; nothing is uploaded or persisted. Existing remote clip manifest/TTS remains fallback.
+- Installation: download `tars_audio_starter_v1.zip` from ChatGPT, extract it, click LOAD AUDIO on live TARS and select all 12 WAVs from `audio/`. Click TEST CLIP; trigger GREET, JOKE, PROVOKE, SCAN to exercise routing. Browser audio activation requires interaction.
+- Syntax check PASS. Live visual/audio QA pending. No copyrighted movie clips uploaded.
