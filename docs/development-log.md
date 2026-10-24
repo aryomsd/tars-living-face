@@ -160,3 +160,49 @@
 - Restored exact R2.25 drawEye implementation; removed R2.28/R2.29 organic eye morphing engine and update call.
 - Kept R2.27 circle-style selector and R2.29 smaller autonomous face depth.
 - JS syntax PASS; browser QA pending.
+
+## 2026-10-25 — TARS Social Community v1 (design decisions, NOT implemented)
+
+### Locked existing visual baseline
+- R2.30 original eyes restored from R2.25. Do not redesign eye shapes as part of social features.
+- Retain ring-style options, elastic neck, personality/behavior, and reduced oversized-face tendency.
+
+### Identity and personality
+- Every owner has a distinct TARS identity and persistent personality across restarts; save/load and export/import or secure transfer later.
+- Personality and relationship memory evolve gradually from interactions, without losing baseline character.
+- Each TARS has a HOME DEVICE; guest visits must not duplicate the active character.
+- Keep local personality data separate from public discoverable presence; never broadcast private profile or precise GPS coordinates.
+
+### Cross-platform discovery
+- Prioritize Android and iPhone, with tablet/laptop compatibility.
+- GPS/geolocation is for broad opt-in discovery of active nearby TARS (illustrative awareness range 100–500 m), NOT reliable 50 cm measurement.
+- Other TARS may drift, peek, and wander subtly in the BACKGROUND of the owner's canvas; main TARS remains dominant. Limit concurrent visible visitors (~3–5).
+- Only actively discoverable/consenting TARS appear; presence expires after a short TTL, with no expectation of reliable mobile browser background location.
+- Closer encounter is a candidate until confirmed; do not auto-promote relationship based on GPS alone.
+- For physical near-field detection use optional BLE/native bridge, UWB on compatible devices, or manual QR pairing; BLE RSSI is approximate. Wi-Fi/WebRTC/WebSocket is communication, not distance measurement.
+- Proximity enter/exit must use debounce/hysteresis to avoid flapping. A 50 cm threshold is an EXPERIENCE GOAL, not a guaranteed GPS/BLE accuracy claim.
+
+### Social relationship tiers (relationship is persistent, proximity is temporary)
+1. STRANGER: never confirmed close; micro background size, opacity 20%.
+2. ACQUAINTANCE: confirmed nearby but no nudge/acknowledgment; small, opacity 30%.
+3. FAMILIAR: nudge occurred but no jump yet; medium, opacity 50%.
+4. VISITOR: at least one completed jump; larger, opacity 60%.
+5. BESTIE: special relationship; largest background presence, opacity 80%; requires repeated meaningful visits and mutual approval, not automatic after one jump.
+- Proposed relative background size scale pending visual tuning: 20%, 35%, 50%, 70%, 90% of maximum background TARS size respectively.
+- Tier history survives distance changes; display only while relevant/nearby/discoverable. Mood and personality drive behavior toward each tier, not tier alone.
+
+### Social behavior and jump / visit
+- Nearby TARS react to one another based on mood, personality, trust and encounter history (peek, glance, greet, avoid, playful chase, etc.).
+- Both owner-initiated VISIT and personality-initiated CAN I GO? requests are supported.
+- Visiting requires permission/acceptance for first version; BESTIE may gain privileged spontaneous visit REQUESTS, owner can disable.
+- On accepted visit, TARS A jumps from canvas A and appears as a second interactive character in canvas B alongside host TARS B. Canvas A shows Away Visiting.
+- A guest can return via RETURN, connection loss/timeout, or confirmed departure from the proximity zone. Ownership and canonical identity remain with home device.
+- Persist encounter summary and relationship milestones after visits; prevent simultaneous duplicate active presence; support recovery from disconnects.
+
+### Proposed phased implementation
+P1: persistent identity, personality and relationship store, backup/export/import.
+P2: TARS-to-TARS communication protocol, pairing QR, social behavior, guest canvas and visit/return lifecycle.
+P3: opt-in geolocation presence service and social radar background tiers.
+P4: BLE/UWB/native bridge proximity detection and calibration; cross-device hardening.
+- Use modular components, avoid changing R2.30 eyes or physics. Cloudflare Workers + Durable Objects are a possible backend, not yet selected.
+- These are product/design decisions; no social feature code, production backend or proximity accuracy test has been completed.
