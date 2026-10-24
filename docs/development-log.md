@@ -181,3 +181,8 @@
 - Depth scale maps extreme z=-1 to 5% and z=+1 to 120% of short-side reference canvas, while normal z=.30 is 57%.
 - Behavior-orchestrated positive/negative depth kept near normal; dramatic explicit gestures retain extreme zoom range.
 - Original R2.30 eyes unchanged. JavaScript syntax PASS; browser visual QA pending.
+
+## 2026-10-25 — R2.32 Depth and BOO Slingshot
+- Normal depth centered at z=.22 (autonomous .14–.30); start/reset and behavior orchestration adjusted.
+- BOO now retracts to z=-1 (5% canvas reference) and rapidly slingshots to z=+1 (120%) with timed acceleration and slight overshoot easing, then returns to normal.
+- Original R2.30 eye geometry untouched. JavaScript syntax PASS; browser visual QA pending.
