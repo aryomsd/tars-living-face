@@ -144,3 +144,9 @@
 - Removed R2.26 local audio WAV loader and TEST CLIP experiment; original voice manifest and speech fallback remain unchanged.
 - Added RINGS selector in Settings: CLASSIC, MINIMAL, DASHED, TARGET, NONE. NONE hides both animated circles but retains eyes and physics. Ring rendering continues to follow depth and motion.
 - JavaScript syntax PASS. Visual browser QA pending.
+
+## 2026-10-25 — R2.28 Organic Eye Engine
+- Replaced per-expression eye shape switches with one continuously morphed cubic Bézier contour per eye.
+- Spring-damped width, height, lean, bulge, and horizontal offset channels; independent per-eye response and movement-triggered squash/stretch.
+- Existing expression states supply continuously interpolated target parameters; original eye colors, motion, rings and behavior retained.
+- JavaScript syntax PASS; live visual/browser QA pending.
