@@ -103,3 +103,8 @@
 - Added original Hollywood-inspired cinematic dialogue pools for BOO, pounce, intimidation, hide, dizziness, confusion, anger, curiosity and play, with event-specific triggering and speech cooldown.
 - Browser SpeechSynthesis still used (no copyrighted film samples, no actor voice clone); shifted mood-dependent English TTS pitch/rate toward dry, understated delivery. Actual timbre varies by OS/browser installed voice.
 - Syntax check passed; audio quality, voice availability and browser-device QA pending.
+
+## 2026-10-24 — R2.21 Bumblebee Voice Library
+- Added manifest-driven HTML Audio clip playback prioritized over browser TTS by event/mood, recent-clip avoidance, interruption behavior and TTS fallback.
+- Empty manifest intentionally ships without unlicensed Hollywood clips; see docs/voice-library.md for adding cleared assets.
+- JavaScript syntax check passed. Playback/browser/mobile QA pending.
