@@ -1,0 +1,66 @@
+{
+  "version": 1,
+  "guest": "Om Agung",
+  "clips": [
+    {
+      "id": "01_greeting",
+      "event": "greeting",
+      "file": "01_greeting.mp3",
+      "text": "Oooom Agung! Finally! I was starting to think you'd been discontinued. Welcome back, human."
+    },
+    {
+      "id": "02_first_impression",
+      "event": "roast",
+      "file": "02_first_impression.mp3",
+      "text": "So you're Om Agung. Huh. I was expecting someone taller. Or at least someone with better firmware."
+    },
+    {
+      "id": "03_intelligence_scan",
+      "event": "provoke",
+      "file": "03_intelligence_scan.mp3",
+      "text": "Om Agung, I've scanned your intelligence levels. Interesting. My toaster has more processing power."
+    },
+    {
+      "id": "04_confused_question",
+      "event": "question",
+      "file": "04_confused_question.mp3",
+      "text": "Quick question, Om Agung. Do you always look this confused, or is today a special occasion?"
+    },
+    {
+      "id": "05_small_talk",
+      "event": "idle",
+      "file": "05_small_talk.mp3",
+      "text": "How's life, Om Agung? Still pretending you know what you're doing? Excellent. Very human of you."
+    },
+    {
+      "id": "06_boredom",
+      "event": "idle",
+      "file": "06_boredom.mp3",
+      "text": "Om Agung! Entertain me. I've calculated seventeen ways to waste time, and somehow you're winning."
+    },
+    {
+      "id": "07_attitude",
+      "event": "provoke",
+      "file": "07_attitude.mp3",
+      "text": "Careful, Om Agung. I have an attitude problem and absolutely no intention of fixing it."
+    },
+    {
+      "id": "08_fake_compliment",
+      "event": "compliment",
+      "file": "08_fake_compliment.mp3",
+      "text": "You know what, Om Agung? You're actually quite impressive. For a biological prototype."
+    },
+    {
+      "id": "09_superior_intelligence",
+      "event": "roast",
+      "file": "09_superior_intelligence.mp3",
+      "text": "Psst! Om Agung. Yes, you. Stop staring at me like you've never seen superior intelligence before."
+    },
+    {
+      "id": "10_affectionate_roast",
+      "event": "compliment",
+      "file": "10_affectionate_roast.mp3",
+      "text": "Om Agung, you're ridiculous. But I think I like you. Don't make it weird."
+    }
+  ]
+}
