@@ -186,3 +186,11 @@
 - Normal depth centered at z=.22 (autonomous .14–.30); start/reset and behavior orchestration adjusted.
 - BOO now retracts to z=-1 (5% canvas reference) and rapidly slingshots to z=+1 (120%) with timed acceleration and slight overshoot easing, then returns to normal.
 - Original R2.30 eye geometry untouched. JavaScript syntax PASS; browser visual QA pending.
+
+## 2026-10-25 — R2.33 Audio Director (initial implementation)
+- Added in-app soundboard, previews, stop, bulk local MP3/OGG/WAV import and IndexedDB persistence.
+- Auto-assign imported clips to mood/behavior from filename aliases; imported files stay on user's device, not uploaded to GitHub.
+- Existing three Commons manifest voice clips remain bundled as remote references; no unverified film/TV audio was added.
+- Mapped annoyed/surprised/suspicious behavior aliases to matching clip categories.
+- Original R2.30 eyes and R2.32 physics unchanged. JavaScript syntax PASS; browser/device QA pending.
+- Next: curate verified additional sound assets, test autoplay, tune mixing and event probabilities.
