@@ -194,3 +194,8 @@
 - Mapped annoyed/surprised/suspicious behavior aliases to matching clip categories.
 - Original R2.30 eyes and R2.32 physics unchanged. JavaScript syntax PASS; browser/device QA pending.
 - Next: curate verified additional sound assets, test autoplay, tune mixing and event probabilities.
+
+## 2026-10-25 — R2.34 Audio Curation Seed
+- Added three individually identified Wikimedia Commons remote audio references (six total in manifest), with mood tags.
+- Documented 20 candidate sound/event mappings from Mixkit, without inventing direct media URLs or claiming assets downloaded.
+- No change to eyes, depth, physics or R2.33 Audio Director code. Browser playback QA still pending.
