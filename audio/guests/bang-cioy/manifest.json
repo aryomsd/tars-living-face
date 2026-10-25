@@ -1,55 +1,55 @@
 {
   "version": 1,
   "guest": "Bang Cioy",
-  "status": "trial_audio_not_uploaded",
+  "status": "trial_8_clips_uploaded",
   "clips": [
     {
       "id": "03_intelligence_scan",
-      "event": "provoke",
+      "event": "greeting",
       "file": "03_intelligence_scan.mp3",
-      "text": "Bang Cioy"
+      "text": "Bang Cioy! Gua baru selesai analisis kecerdasan lo. Mau kabar baik atau kabar buruk? Ah sudahlah, dua-duanya buruk."
     },
     {
       "id": "04_witty_question",
       "event": "question",
       "file": "04_witty_question.mp3",
-      "text": "Bang Cioy"
+      "text": "Eh Bang Cioy, gua penasaran. Lo tuh emang selalu kelihatan bingung, atau lagi mikir keras?"
     },
     {
       "id": "05_small_talk",
       "event": "idle",
       "file": "05_small_talk.mp3",
-      "text": "Bang Cioy"
+      "text": "Yo Bang Cioy, apa kabar lo? Masih sibuk pura-pura ngerti kehidupan?"
     },
     {
       "id": "06_boredom",
       "event": "idle",
       "file": "06_boredom.mp3",
-      "text": "Bang Cioy"
+      "text": "Bang Cioy! Gua udah nungguin lo dari tadi."
     },
     {
       "id": "07_provocation",
       "event": "provoke",
       "file": "07_provocation.mp3",
-      "text": "Bang Cioy"
+      "text": "Bang Cioy, jangan pencet-pencet gua terus dong!"
     },
     {
       "id": "08_fake_compliment",
       "event": "compliment",
       "file": "08_fake_compliment.mp3",
-      "text": "Bang Cioy"
+      "text": "Tau nggak Bang Cioy, sebenernya lo cukup mengesankan."
     },
     {
       "id": "09_random_callout",
       "event": "roast",
       "file": "09_random_callout.mp3",
-      "text": "Bang Cioy"
+      "text": "Psst Bang Cioy! Iya lo! Jangan melototin gua begitu."
     },
     {
       "id": "10_affectionate_roast",
       "event": "compliment",
       "file": "10_affectionate_roast.mp3",
-      "text": "Bang Cioy"
+      "text": "Bang Cioy, gua suka lo Bang. Jangan ge-er."
     }
   ]
 }
