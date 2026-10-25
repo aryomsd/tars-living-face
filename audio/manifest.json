@@ -1,6 +1,6 @@
 {
-  "version": 2,
-  "description": "Curated CC0/public domain speech recordings for public TARS playback; not Hollywood dialogue.",
+  "version": 3,
+  "description": "Seed audio collection with individually identified Wikimedia Commons recordings; no film/TV clips included. Browser playback subject to remote host.",
   "clips": [
     {
       "id": "boo-us-cc0",
@@ -38,6 +38,39 @@
       "source": "https://commons.wikimedia.org/wiki/File:Hello,_everyone!.ogg",
       "author": "Voice of America Learning English",
       "license": "US public domain"
+    },
+    {
+      "id": "pc98-beep-cc0",
+      "src": "https://commons.wikimedia.org/wiki/Special:Redirect/file/NEC_PC-9801VX_ITF_beep_sound.ogg",
+      "moods": [
+        "neutral",
+        "scan"
+      ],
+      "approved": true,
+      "source": "https://commons.wikimedia.org/wiki/File:NEC_PC-9801VX_ITF_beep_sound.ogg",
+      "license": "CC0 1.0"
+    },
+    {
+      "id": "computer-beep-cc-by-sa",
+      "src": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Beep_400ms.ogg",
+      "moods": [
+        "scan",
+        "neutral"
+      ],
+      "approved": true,
+      "source": "https://commons.wikimedia.org/wiki/File:Beep_400ms.ogg",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "id": "robot-word-cc-by-sa",
+      "src": "https://commons.wikimedia.org/wiki/Special:Redirect/file/En-au-robot.ogg",
+      "moods": [
+        "greet",
+        "curious"
+      ],
+      "approved": true,
+      "source": "https://commons.wikimedia.org/wiki/File:En-au-robot.ogg",
+      "license": "CC BY-SA 4.0"
     }
   ]
 }
