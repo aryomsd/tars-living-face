@@ -1,0 +1,55 @@
+{
+  "version": 1,
+  "guest": "Bang Cioy",
+  "status": "trial_audio_not_uploaded",
+  "clips": [
+    {
+      "id": "03_intelligence_scan",
+      "event": "provoke",
+      "file": "03_intelligence_scan.mp3",
+      "text": "Bang Cioy"
+    },
+    {
+      "id": "04_witty_question",
+      "event": "question",
+      "file": "04_witty_question.mp3",
+      "text": "Bang Cioy"
+    },
+    {
+      "id": "05_small_talk",
+      "event": "idle",
+      "file": "05_small_talk.mp3",
+      "text": "Bang Cioy"
+    },
+    {
+      "id": "06_boredom",
+      "event": "idle",
+      "file": "06_boredom.mp3",
+      "text": "Bang Cioy"
+    },
+    {
+      "id": "07_provocation",
+      "event": "provoke",
+      "file": "07_provocation.mp3",
+      "text": "Bang Cioy"
+    },
+    {
+      "id": "08_fake_compliment",
+      "event": "compliment",
+      "file": "08_fake_compliment.mp3",
+      "text": "Bang Cioy"
+    },
+    {
+      "id": "09_random_callout",
+      "event": "roast",
+      "file": "09_random_callout.mp3",
+      "text": "Bang Cioy"
+    },
+    {
+      "id": "10_affectionate_roast",
+      "event": "compliment",
+      "file": "10_affectionate_roast.mp3",
+      "text": "Bang Cioy"
+    }
+  ]
+}
