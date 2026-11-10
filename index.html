@@ -261,9 +261,12 @@ case 'awe':return{wm:1.1,hm:1.12,r:31,y:-6,gx:1};
 case 'curious':return i?{wm:.86,hm:.86}:{wm:1.14,hm:1.14};
 case 'confused':return i?{hm:.81,lt:.14,la:-.25}:{hm:1.06};
 default:return{}}}
-function tickEyeMorph(dt){if(expression!==eyeFx.exp){eyeFx.exp=expression;let f=EYE_VARIANTS[expression];eyeFx.variant=f?f():expression}
+const EYE_ANT=['wm','hm','lt','la','lb','y'];
+function tickEyeMorph(dt){let changed=false;if(expression!==eyeFx.exp){eyeFx.exp=expression;let f=EYE_VARIANTS[expression],nv=f?f():expression;changed=nv!==eyeFx.variant;eyeFx.variant=nv}
 let v=eyeFx.variant,slow=v==='sleepy'||v==='sleep'||v==='bored',freq=slow?3.2:7.5,damp=slow?.9:.52;
-for(let i=0;i<2;i++){let e=eyeMorph[i],wink=micro.kind==='wink'&&i===(micro.side<0?0:1),tg={...EYE_P0,...(wink?{hm:.69,lb:.55}:eyePreset(v,i))},f=freq*(i===0?1:.93);for(let k=0;k<2;k++)for(const key in EYE_P0)eyeSpring(e,key,tg[key],f,damp,dt/2);e.wm=Math.max(.1,e.wm);e.hm=Math.max(.02,e.hm);e.r=Math.max(0,e.r)}}
+// R2.35b anticipation: brief counter-move before the new shape (taller before narrowing, wider before squeezing)
+if(changed&&!slow){eyeFx.ant=.09;eyeFx.from=eyeMorph.map(e=>({...e}))}eyeFx.ant=Math.max(0,(eyeFx.ant||0)-dt);
+for(let i=0;i<2;i++){let e=eyeMorph[i],wink=micro.kind==='wink'&&i===(micro.side<0?0:1),tg={...EYE_P0,...(wink?{hm:.69,lb:.55}:eyePreset(v,i))},f=freq*(i===0?1:.93)*(eyeFx.ant>0?1.6:1);if(eyeFx.ant>0&&!wink)for(const key of EYE_ANT)tg[key]=eyeFx.from[i][key]-(tg[key]-eyeFx.from[i][key])*.22;for(let k=0;k<2;k++)for(const key in EYE_P0)eyeSpring(e,key,tg[key],f,damp,dt/2);e.wm=Math.max(.1,e.wm);e.hm=Math.max(.02,e.hm);e.r=Math.max(0,e.r)}}
 function drawEye(i,t){let e=eye[i],m=eyeMorph[i],sg=i===0?-1:1,inner=-sg,quirk=microOffset(t);
 if(i===0&&blinkEnd!==eyeFx.lastEnd){eyeFx.lastEnd=blinkEnd;eyeFx.start=t}
 // Blink widens while it squashes, so both eyes briefly merge into one line (Cozmo blink).
@@ -300,7 +303,7 @@ if(impactY){body.vy=-body.vy*.72;neck.vy=-oldVY*.64;face.vy=neck.vy*.9;body.y+=M
 if(t-neckImpact>280){neckImpact=t;wobble=Math.max(wobble,.95);dizzy=clamp(dizzy+.09,0,1);show('surprised',800);fx('rumble');prompt('NECK / EDGE IMPACT / REBOUND',true)}}}
 
 }
-let wantX=clamp((gaze.x-face.x)/350,-1,1),wantY=clamp((gaze.y-face.y)/260,-1,1);if(drag||t>saccade.next||Math.hypot(wantX-saccade.tx,wantY-saccade.ty)>.35){saccade.tx=wantX;saccade.ty=wantY;saccade.next=t+rand(280,1200)}for(let k=0;k<2;k++){eyeSpring(saccade,'x',saccade.tx,8.5,.5,dt/2);eyeSpring(saccade,'y',saccade.ty,8.5,.5,dt/2)}let lx=clamp(saccade.x,-1.15,1.15),ly=clamp(saccade.y,-1.15,1.15);
+let wantX=clamp((gaze.x-face.x)/350,-1,1),wantY=clamp((gaze.y-face.y)/260,-1,1);let jump=Math.hypot(wantX-saccade.tx,wantY-saccade.ty);if(jump>.35||(!drag&&t>saccade.next&&jump>.08)){saccade.tx=wantX;saccade.ty=wantY;saccade.next=t+rand(280,1200)}else{let pf=Math.min(1,dt*(drag?14:6));saccade.tx+=(wantX-saccade.tx)*pf;saccade.ty+=(wantY-saccade.ty)*pf}for(let k=0;k<2;k++){eyeSpring(saccade,'x',saccade.tx,8.5,.5,dt/2);eyeSpring(saccade,'y',saccade.ty,8.5,.5,dt/2)}let lx=clamp(saccade.x,-1.15,1.15),ly=clamp(saccade.y,-1.15,1.15);
 for(let i=0;i<2;i++){let e=eye[i],sg=i===0?-1:1,depth=1-sg*lx*.16;let height=1;e.x+=(sg*(35-Math.abs(lx)*(sg*lx<0?7:2))+lx*12-e.x)*Math.min(1,dt*30);e.y+=(ly*10-e.y)*Math.min(1,dt*30);e.w+=(55*depth-e.w)*Math.min(1,dt*13);e.h+=(64*height*depth-e.h)*Math.min(1,dt*14);e.tilt+=(clamp(face.vx/3300,-.12,.12)+sg*lx*.07+(expression==='curious'?sg*.12:0)+wobble*Math.sin(t*.025+i)*.09-e.tilt)*Math.min(1,dt*9)}
 if(t>blink){blinkEnd=t+105;blink=t+rand(1800,6000);if(Math.random()<.28)fx('blink')}if(t>exprEnd&&expression!=='neutral')show(dizzy>.32?'dizzy':anger>.25?'angry':irritation>.18?'sleepy':'neutral',rand(2200,4000));
 for(let j=0;j<2;j++){let r=rings[j];if(t>r.next){r.mode=pick(mood==='angry'?['burst','stutter','reverse','stop']:['stop','slow','drift','burst','stutter','reverse']);let s=Math.random()<.5?-1:1;r.goal=r.mode==='stop'?0:r.mode==='slow'?s*rand(.004,.04):r.mode==='drift'?s*rand(.08,.38):r.mode==='burst'?s*rand(4,8):s*rand(1,3);r.next=t+(r.mode==='slow'?rand(2000,4500):rand(500,2300))}let goal=r.mode==='stutter'&&Math.sin(t*.034+j)>.1?0:r.mode==='reverse'?Math.abs(r.goal)*(Math.sin(t*.01+j)>0?1:-1):r.goal;r.v+=(goal-r.v)*Math.min(1,dt*3.5);r.a+=r.v*dt}
