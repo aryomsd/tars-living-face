@@ -62,9 +62,11 @@ async function loadVoiceLibrary(){try{let r=await fetch('./audio/manifest.json',
 loadVoiceLibrary();
 // R2.39 shared cloud library (Cloudflare Worker + R2). Set to the deployed Worker URL, e.g. 'https://morc-audio.<you>.workers.dev'. ?audio=<url> overrides for testing.
 const MORC_AUDIO_WORKER='';
-async function loadCloudLibrary(){let base=(new URLSearchParams(location.search).get('audio')||MORC_AUDIO_WORKER).replace(/\/$/,'');if(!/^https:\/\//.test(base))return;try{let r=await fetch(base+'/manifest.json',{cache:'no-cache'}),d=await r.json();let add=(Array.isArray(d.clips)?d.clips:[]).filter(c=>c&&typeof c.src==='string'&&c.src.startsWith(base+'/clip/')&&Array.isArray(c.moods)&&c.moods.length&&c.approved===true).map(c=>({...c,cloud:true}));clipLibrary.entries.push(...add);if(typeof refreshAudioBoard==='function')refreshAudioBoard()}catch(e){console.warn('Cloud audio unavailable',e)}}
-function mkAudio(c){let a=new Audio();if(c.cloud)a.crossOrigin='anonymous';a.src=c.src;return a}
-setTimeout(loadCloudLibrary,600);
+async function loadCloudLibrary(){let base=new URLSearchParams(location.search).get('audio')||MORC_AUDIO_WORKER;if(!base){try{base=(await (await fetch('./audio/cloud.json',{cache:'no-cache'})).json()).worker||''}catch(_){}}base=String(base).replace(/\/$/,'');if(!/^https:\/\//.test(base))return;try{let d=await (await fetch(base+'/manifest.json',{cache:'no-cache'})).json();let list=(Array.isArray(d.clips)?d.clips:[]).filter(c=>c&&typeof c.src==='string'&&c.src.startsWith(base+'/clip/')&&Array.isArray(c.moods)&&c.moods.length&&c.approved===true);
+// Zero-lag: clips join the playlist only after they are fully downloaded into memory (≈25 KB each), 3 at a time, max 60 per visit, random each visit.
+for(let i=list.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[list[i],list[j]]=[list[j],list[i]]}list=list.slice(0,60);let next=0;const worker=async()=>{while(next<list.length){let c=list[next++];try{let r=await fetch(c.src);if(!r.ok)continue;let b=await r.blob();clipLibrary.entries.push({...c,src:URL.createObjectURL(b),cloud:true});if(typeof refreshAudioBoard==='function'&&next%10===0)refreshAudioBoard()}catch(_){}}};await Promise.all([worker(),worker(),worker()]);if(typeof refreshAudioBoard==='function')refreshAudioBoard()}catch(e){console.warn('Cloud audio unavailable',e)}}
+function mkAudio(c){return new Audio(c.src)}
+setTimeout(loadCloudLibrary,1200);
 
 // R2.33 Audio Director: persistent batch imports, filename-based mood assignment, and preview.
 const audioTags=['boo','pounce','curious','annoy','angry','happy','glee','dizzy','sleepy','greet','return','joke','scan','provoke','touch','move','sulk','bored','compliment','surprised','sad','neutral','hamburger','pet','bored'];
