@@ -1,6 +1,11 @@
 name: MORC audio library
 on:
   workflow_dispatch:
+    inputs:
+      normalize_only:
+        description: 'Skip new-clip harvest; only equalize + re-tag the existing library'
+        type: boolean
+        default: false
   schedule:
     - cron: '17 19 * * *'   # daily 02:17 WIB — library grows by the day
   push:
@@ -45,10 +50,14 @@ jobs:
         with: { python-version: '3.11' }
       - run: pip install -q faster-whisper==1.0.3 requests
       - name: Build clips (public domain -> Whisper -> 1-4 s mp3)
+        if: ${{ !inputs.normalize_only }}
         run: python cloudflare/pipeline/build_clips.py --worker "$WORKER_URL" --out clips_out
       - name: Upload to R2
+        if: ${{ !inputs.normalize_only }}
         run: |
           shopt -s nullglob
           for f in clips_out/*.mp3; do
             wrangler r2 object put "morc-audio/clips/$(basename "$f")" --file "$f" --content-type audio/mpeg --remote || echo "upload failed: $f"
           done
+      - name: Equalize loudness + assign moods (whole library, incl. manual uploads)
+        run: python cloudflare/pipeline/normalize_library.py --worker "$WORKER_URL"
