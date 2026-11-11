@@ -1,8 +1,9 @@
 name = "morc-audio"
 main = "morc-audio-worker.js"
 compatibility_date = "2024-11-01"
+account_id = "2a71697f8ca88cf88f05e85fef0cdbf8"
+workers_dev = true
 
 [[r2_buckets]]
 binding = "AUDIO"
 bucket_name = "morc-audio"
-workers_dev = true
