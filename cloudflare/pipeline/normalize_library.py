@@ -2,7 +2,7 @@
 - Measures each clip (EBU R128). Off-target (outside -16 LUFS +-1, true peak > -1 dBTP) or non-mp3 -> two-pass
   loudnorm, silence trim, short fades, mono 24 kHz 64 kbps mp3.
 - Name not in "<mood>[+mood] - <source> - <line>" form -> Whisper transcript -> mood tagger -> renamed.
-- Original is copied to originals/<name> before anything is overwritten or deleted (worker ignores that prefix).
+- No backups: originals are replaced in place; any old originals/ backups are deleted.
 Idempotent: clips already on target with a valid name are skipped. Usage: python normalize_library.py --worker URL"""
 import argparse, json, os, re, subprocess, sys, tempfile, urllib.parse, urllib.request
 sys.path.insert(0, os.path.dirname(__file__))
@@ -48,6 +48,10 @@ def main():
     keys = json.loads(fetch(base + "/keys"))
     names = {k["key"][6:] for k in keys}
     tmp = tempfile.mkdtemp()
+    if not a.dry:
+        for o in json.loads(fetch(base + "/keys?prefix=originals/")):
+            try: wr("delete", "morc-audio/" + o["key"])
+            except Exception as e: print(f"cleanup failed {o['key']}: {e}")
     done = skipped = failed = 0
     for k in keys:
         name = k["key"][6:]
@@ -85,7 +89,6 @@ def main():
             after = measure(out)
             print(f"{'DRY ' if a.dry else ''}{name!r} I={I:.1f} TP={TP:.1f} -> {new!r} I={float(after['input_i']):.1f} TP={float(after['input_tp']):.1f}")
             if a.dry: done += 1; continue
-            wr("put", f"morc-audio/originals/{name}", "--file", src)
             wr("put", f"morc-audio/clips/{new}", "--file", out, "--content-type", "audio/mpeg")
             if new != name:
                 wr("delete", f"morc-audio/clips/{name}"); names.discard(name); names.add(new)
