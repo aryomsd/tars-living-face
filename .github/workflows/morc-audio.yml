@@ -43,7 +43,7 @@ jobs:
       - run: sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
       - uses: actions/setup-python@v5
         with: { python-version: '3.11' }
-      - run: pip install -q faster-whisper==1.0.3
+      - run: pip install -q faster-whisper==1.0.3 requests
       - name: Build clips (public domain -> Whisper -> 1-4 s mp3)
         run: python cloudflare/pipeline/build_clips.py --worker "$WORKER_URL" --out clips_out
       - name: Upload to R2
