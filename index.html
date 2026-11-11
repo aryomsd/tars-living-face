@@ -62,7 +62,6 @@ async function loadVoiceLibrary(){try{let r=await fetch('./audio/manifest.json',
 loadVoiceLibrary();
 
 // R2.33 Audio Director: persistent batch imports, filename-based mood assignment, and preview.
-// Never store copyrighted media in the repository; user-provided local files remain in IndexedDB.
 const audioTags=['boo','pounce','curious','annoy','angry','happy','glee','dizzy','sleepy','greet','return','joke','scan','provoke','touch','move','sulk','bored','compliment','surprised','sad','neutral'];
 const audioAliases={surprise:'boo',startle:'boo',jump:'pounce',whoosh:'pounce',question:'curious',confused:'curious',grumble:'angry',irritated:'angry',laugh:'happy',giggle:'happy',cute:'happy',chirp:'happy',hello:'greet',welcome:'return',sarcasm:'annoy',sarcastic:'annoy',robot:'neutral',idle:'neutral',beep:'neutral',bleep:'neutral',boop:'neutral',lonely:'bored',sad:'sulk',complain:'annoy',shake:'dizzy',spin:'dizzy',compliment:'happy'};
 let audioDb=null;const importedClips=new Map();const audioStatus=document.getElementById('audio-status'),audioList=document.getElementById('audio-list');
