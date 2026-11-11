@@ -1,6 +1,6 @@
 {
-  "version": 3,
-  "description": "Seed audio collection with individually identified Wikimedia Commons recordings; no film/TV clips included. Browser playback subject to remote host.",
+  "version": 4,
+  "description": "Seed audio collection: Wikimedia Commons CC0 and public-domain NASA mission audio. Personal movie/TV clips are imported locally via Audio Director.",
   "clips": [
     {
       "id": "boo-us-cc0",
@@ -71,6 +71,57 @@
       "approved": true,
       "source": "https://commons.wikimedia.org/wiki/File:En-au-robot.ogg",
       "license": "CC BY-SA 4.0"
+    },
+    {
+      "id": "nasa-apollo13-problem",
+      "src": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Apollo13-wehaveaproblem.ogg",
+      "moods": [
+        "dizzy",
+        "annoy"
+      ],
+      "fallback": "Houston, we've had a problem.",
+      "approved": true,
+      "source": "https://commons.wikimedia.org/wiki/File:Apollo13-wehaveaproblem.ogg",
+      "author": "NASA",
+      "license": "Public domain (NASA)"
+    },
+    {
+      "id": "nasa-houston-problem",
+      "src": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Houston_problem.ogg",
+      "moods": [
+        "dizzy",
+        "sulk"
+      ],
+      "fallback": "Houston, we have a problem.",
+      "approved": true,
+      "source": "https://commons.wikimedia.org/wiki/File:Houston_problem.ogg",
+      "author": "NASA",
+      "license": "Public domain (NASA)"
+    },
+    {
+      "id": "nasa-armstrong-small-step",
+      "src": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Armstrong_Small_Step.ogg",
+      "moods": [
+        "move",
+        "return"
+      ],
+      "fallback": "One small step.",
+      "approved": true,
+      "source": "https://commons.wikimedia.org/wiki/File:Armstrong_Small_Step.ogg",
+      "author": "NASA",
+      "license": "Public domain (NASA)"
+    },
+    {
+      "id": "nasa-apollo14-first-step",
+      "src": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Ap14_first_step.ogg",
+      "moods": [
+        "move"
+      ],
+      "fallback": "First step.",
+      "approved": true,
+      "source": "https://commons.wikimedia.org/wiki/File:Ap14_first_step.ogg",
+      "author": "NASA",
+      "license": "Public domain (NASA)"
     }
   ]
 }
