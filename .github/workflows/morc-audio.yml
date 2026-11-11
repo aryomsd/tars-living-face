@@ -15,7 +15,7 @@ jobs:
     timeout-minutes: 90
     env:
       CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      CLOUDFLARE_ACCOUNT_ID: 2a71697f8ca88cf88f05e85fef0cdbf8
     steps:
       - uses: actions/checkout@v4
       - name: Check secrets
