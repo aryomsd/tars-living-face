@@ -75,7 +75,7 @@ def main():
         try: existing = {urllib.parse.unquote(c["src"].rsplit("/clip/", 1)[1]) for c in json.loads(get(a.worker.rstrip("/") + "/manifest.json"))["clips"]}
         except Exception as e: print("manifest read failed:", e)
     from faster_whisper import WhisperModel
-    model = WhisperModel("base.en", device="cpu", compute_type="int8")
+    model = WhisperModel("small.en", device="cpu", compute_type="int8")
     total = 0
     for src in random.sample(SOURCES, len(SOURCES)):
         if total >= TOTAL: break
@@ -90,12 +90,13 @@ def main():
             win = f"/tmp/win_{w}.wav"
             try: run(["ffmpeg", "-y", "-ss", str(int(start)), "-i", url, "-t", str(WIN_S), "-vn", "-ac", "1", "-ar", "22050", win])
             except subprocess.CalledProcessError: print("  window failed"); continue
-            segs, _ = model.transcribe(win, vad_filter=True, beam_size=1)
+            segs, _ = model.transcribe(win, vad_filter=True, beam_size=5, condition_on_previous_text=False)
             for s in segs:
                 if got >= PER_SOURCE or total >= TOTAL: break
                 d, text = s.end - s.start, s.text.strip()
                 words = len(text.split())
-                if not (0.8 <= d <= 4.2 and 2 <= words <= 12) or s.avg_logprob < -0.6 or s.no_speech_prob > 0.4: continue
+                if not (1.2 <= d <= 7.0 and 4 <= words <= 20) or s.avg_logprob < -0.45 or s.no_speech_prob > 0.3 or s.compression_ratio > 2.2: continue
+                if not re.match(r"^[A-Z\"']", text) or not re.search(r"[.!?]$", text): continue  # whole sentences only
                 mood = mood_of(text)
                 if not mood: continue
                 name = f"{mood} - {src['name']} - {slug(text)}.mp3"
