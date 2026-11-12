@@ -10,7 +10,7 @@ import { Actor, motion } from '../physics/spring.js';
 const P0 = { w: 1, h: 1, r: 16, ti: 0, to: 0, bi: 0, bo: 0, tb: 0.06, bb: 0.06, tw: 1, bw: 1, sk: 0, y: 0, gx: 0, rot: 0, hz: 0 };
 const KEYS = Object.keys(P0);
 const SLOW = new Set(['sleepy', 'sleep', 'bored', 'sad']);
-const BASE = [{ x: -36, w: 56, h: 66 }, { x: 36, w: 56, h: 66 }];
+const BASE = [{ x: -42, w: 54, h: 66 }, { x: 42, w: 54, h: 66 }];
 export const GAZE = { x: 22, y: 16 }; // eyes stay inside the display; head/body do the big moves
 
 const both = (o) => () => o;
@@ -194,7 +194,7 @@ export function createEyes() {
 function eyePath(c, w, h, sg, r, ti, to, bi, bo, tb, bb, tw, bw, sk) {
   const L = sg < 0, tL = L ? to : ti, tR = L ? ti : to, bL = L ? bo : bi, bR = L ? bi : bo, kx = sg * sk * w;
   const P = [[-w / 2 * tw + kx, -h / 2 + tL * h], [w / 2 * tw + kx, -h / 2 + tR * h], [w / 2 * bw, h / 2 - bR * h], [-w / 2 * bw, h / 2 - bL * h]];
-  const bul = [tb * h, 0.05 * w, bb * h, 0.05 * w]; // top, right, bottom, left (outward +)
+  const bul = [tb * h, 0.02 * w, bb * h, 0.02 * w]; // top, right, bottom, left (outward +)
   const rr = Math.min(r, w / 2, h / 2);
   const IN = [], OUT = [];
   for (let i = 0; i < 4; i++) {
@@ -207,7 +207,9 @@ function eyePath(c, w, h, sg, r, ti, to, bi, bo, tb, bb, tw, bw, sk) {
   c.beginPath(); c.moveTo(OUT[0][0], OUT[0][1]);
   for (let i = 0; i < 4; i++) {
     const j = (i + 1) % 4, A = OUT[i], B = IN[j], dx = B[0] - A[0], dy = B[1] - A[1], l = Math.hypot(dx, dy) || 1;
-    c.quadraticCurveTo((A[0] + B[0]) / 2 + (dy / l) * bul[i] * 2, (A[1] + B[1]) / 2 - (dx / l) * bul[i] * 2, B[0], B[1]);
+    // bulge scales with how much straight edge is left after corner rounding (no spikes on round eyes)
+    const full = Math.hypot(P[j][0] - P[i][0], P[j][1] - P[i][1]) || 1, bg = bul[i] * 2 * Math.min(1, (l / full) * 1.6);
+    c.quadraticCurveTo((A[0] + B[0]) / 2 + (dy / l) * bg, (A[1] + B[1]) / 2 - (dx / l) * bg, B[0], B[1]);
     c.quadraticCurveTo(P[j][0], P[j][1], OUT[j][0], OUT[j][1]);
   }
   c.closePath();
