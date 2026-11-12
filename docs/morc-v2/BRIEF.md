@@ -38,8 +38,8 @@ sarcastic enough for adults. Ships as a **playable module inside the AKAKBURGER 
 - **Member Hub boundary:** Cloudflare account "AKAK GOTW v1" is Member Hub only. A MORC session NEVER touches it.
   v2 ships as a self-contained module (`<morc-bot>` web component + `MORC.mount()`), and the Member Hub
   integration is done later, inside the Member Hub project, with Aryo's approval.
-- **AI speech:** needs an LLM + TTS behind a Worker on the personal account (2a71697f8ca88cf88f05e85fef0cdbf8).
-  Default OFF. Cost cap + per-user rate limit (it's public inside a member app). Keys only in the Worker.
+- **AI speech:** Workers AI behind the existing Worker on the personal account (2a71697f8ca88cf88f05e85fef0cdbf8). Free plan only, $0.
+  Default OFF. Per-user rate limit (it's public inside a member app). No third-party keys.
 - **"Cookie":** use localStorage (cookie only as fallback). Local only. Later, optionally keyed to member ID via host config.
 
 ## What the references show (measured from Aryo's videos)
@@ -65,6 +65,34 @@ Frames/spectrograms are in `ref/`.
 **Xiaozhi (xiaozhi_speech_sheet)**
 - ESP32 with mic → cloud LLM (personality via system prompt) → neural TTS → speaker.
 - Configured from a phone web panel. Lines are short and cheeky.
+
+## HARD RULES (Aryo, 2026-11-12): $0 cost + snappy UX first
+- **No money.** Everything runs on free tiers only. Keep the personal Cloudflare account on the Workers **Free** plan.
+  There, Workers AI stops at 10k neurons/day and cannot bill. When it's exhausted, MORC falls back to babble silently.
+- **Never lag.** MORC reacts instantly to every input (eyes, posture, SFX, babble) and never waits on the network.
+  Network results arrive as a bonus on top of a reaction that has already started.
+- No heavy downloads: no in-browser LLM/TTS models (Kokoro/WebLLM rejected for this reason).
+
+## AI speech plan (phase 6), all free
+- **Pre-baked voice for scripted lines.** The pipeline renders every event/mood line once with Workers AI TTS (MeloTTS),
+  applies the robot/Cozmo filter, and stores the result in R2. Playback is instant and costs 0 neurons per visit.
+  New lines are rendered on the daily run. This covers ~90% of what MORC "says".
+- **Live chat (opt-in):**
+  - Hearing: browser SpeechRecognition where it exists (free, instant). Otherwise Workers AI Whisper-turbo.
+  - Brain: Workers AI small LLM (llama-3.2-3b or 3.1-8b-fast). **Streamed.** Personality system prompt, replies ≤25 words.
+  - Sentence pipelining: as soon as the first sentence finishes streaming, send it to TTS while the rest generates.
+  - Voice: MeloTTS → WebAudio pitch-up + bandpass + light bitcrush. Eyes pulse with loudness. Babble covers the gaps.
+  - While waiting, MORC acts instantly: a "listening" pose on speech end, then a "thinking" eye-scan and hum.
+    A slow network looks like personality, not lag.
+  - Budget guard in the Worker: per-user rate limit, and a daily counter that stops at the free allowance.
+    Then babble-only, plus the line "brain's tired, ask tomorrow".
+- The AI code is lazy-loaded only when the toggle is switched on. The core bundle stays small.
+
+## Performance budget
+- Core bundle < 60 KB gzipped, no external runtime deps. First reaction < 100 ms after load.
+- 60 fps on mid-range Android. Cap DPR at 2. Cache eye glows on offscreen canvases.
+  Pause the loop when the tab is hidden. VFX auto-drops (blur → glow → scanlines) if frame time > 20 ms.
+- Audio: one shared AudioContext, synth nodes pooled/recycled, unlocked on the first tap.
 
 ## Proposed architecture (v2, from scratch, in /v2/)
 Vanilla JS ES modules, no framework. Optional one-step esbuild bundle → `dist/morc.js` for embedding.
@@ -95,7 +123,7 @@ Vanilla JS ES modules, no framework. Optional one-step esbuild bundle → `dist/
 - `audio/`
   - `sfx` — computer-like WebAudio synth: beeps, data chirps, servo whirr tied to movement speed, confirm/deny.
   - `voice` — Cozmo-style babble synth per the measurements above (formant bandpass, 6–8 syl/s, glides, 5–7 Hz vibrato, sung vowels).
-  - `ai` (opt-in) — Worker `/chat` + `/tts`, output pitched up and robot-filtered, eyes pulse with loudness, babble fallback.
+  - `ai` (opt-in, lazy-loaded) — see "AI speech plan": pre-baked lines from R2 + streamed live chat, babble fallback.
 - `memory/` — per-user localStorage: bond, trait drift (playful ↔ grumpy, chatty ↔ quiet), counters, last seen.
   Greeting depends on bond and time away.
 - `ui/`
