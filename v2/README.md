@@ -16,3 +16,8 @@ On the phone over LAN: `http://<pc-ip>:8000/v2/`.
 
 UI skin: replace `style.css`. Engine needs only the `data-morc` / `data-toggle` / `data-control`
 hooks and the `--morc-*` colour variables (read once at mount; call `api.theme()` after a change).
+
+## p1.1 additions
+`src/mind/` (stats, mood, drives, lines EN/ID) · `src/audio/` (SFX, servo whirr, babble, sung vowels) · body modes in `src/body/target.js`.
+F12: `morc.express('angry')`, `morc.gesture('hop')`, `morc.travel(200,0)`, `morc.stats`, `morc._pump(500)` (advance while hidden).
+Audio starts on the first tap (browser rule).

@@ -10,14 +10,14 @@ import { Actor, motion } from '../physics/spring.js';
 const P0 = { w: 1, h: 1, r: 16, ti: 0, to: 0, bi: 0, bo: 0, tb: 0.06, bb: 0.06, tw: 1, bw: 1, sk: 0, y: 0, gx: 0, rot: 0, hz: 0 };
 const KEYS = Object.keys(P0);
 const SLOW = new Set(['sleepy', 'sleep', 'bored', 'sad']);
-const BASE = [{ x: -42, w: 54, h: 66 }, { x: 42, w: 54, h: 66 }];
-export const GAZE = { x: 22, y: 16 }; // eyes stay inside the display; head/body do the big moves
+const BASE = [{ x: -46, w: 62, h: 74 }, { x: 46, w: 62, h: 74 }];
+export const GAZE = { x: 18, y: 14 }; // eyes stay inside the display; head/body do the big moves
 
 const both = (o) => () => o;
 export const EYE_PRESETS = {
   neutral: both({}),
-  happy: both({ h: 0.58, r: 22, tb: 0.32, bb: -0.5, bi: 0.08, bo: 0.08, y: -4 }),
-  glee: both({ w: 1.12, h: 0.52, r: 24, tb: 0.4, bb: -0.72, bi: 0.1, bo: 0.1, y: -12, gx: 2 }),
+  happy: both({ h: 0.55, r: 26, tb: 0.3, bb: -0.4, bi: 0.16, bo: 0.16, y: -4 }),
+  glee: both({ w: 1.12, h: 0.5, r: 28, tb: 0.38, bb: -0.5, bi: 0.2, bo: 0.2, y: -12, gx: 2 }),
   love: both({ hz: 1 }),
   sad: both({ h: 0.6, to: 0.42, ti: 0, tw: 0.92, bb: 0.12, y: 18, gx: 4 }),
   worried: both({ h: 0.85, to: 0.26, sk: -0.04, bb: 0.1, gx: -2 }),
@@ -39,7 +39,7 @@ export const EYE_PRESETS = {
   wonky: (i) => (i ? { w: 0.8, h: 0.8, y: 8, rot: 0.18 } : { w: 1.15, h: 1.12, y: -8, rot: -0.1, gx: -4 }),
   curious: (i) => (i ? { w: 0.86, h: 0.84, tb: 0.04 } : { w: 1.14, h: 1.14, tb: 0.16 }),
   confused: (i) => (i ? { h: 0.78, to: 0.22, ti: 0 } : { h: 1.06, tb: 0.16 }),
-  wink: both({ h: 0.3, r: 14, tb: 0.34, bb: -0.62, bi: 0.1, bo: 0.1, y: -2 }),
+  wink: both({ h: 0.32, r: 18, tb: 0.34, bb: -0.4, bi: 0.18, bo: 0.18, y: -2 }),
 };
 
 export function createEyes() {
