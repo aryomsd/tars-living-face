@@ -10,7 +10,8 @@
 <body>
 <div class="morc-app" data-morc="app">
   <header class="morc-head" data-morc="header">
-    <h1 class="morc-logo"><b>MORC</b> <i>v2.0</i> <small>by AKAK//DEV.WRKS</small></h1>
+    <h1 class="morc-logo"><b>MORC</b> <i>v2.0</i></h1>
+    <img class="morc-dev" src="assets/akak-dev-works-logo.svg" alt="AKAK//DEV.WRKS" width="130" height="25">
   </header>
 
   <main class="morc-stage" data-morc="stage" aria-label="MORC character"></main>
@@ -21,12 +22,14 @@
     <button type="button" data-toggle="voice" aria-pressed="true">VOICE</button>
     <button type="button" data-toggle="ai" aria-pressed="false" disabled title="Phase 6">AI</button>
     <button type="button" data-toggle="vfx" aria-pressed="true">VFX</button>
+    <button type="button" data-toggle="id" aria-pressed="false" title="Indonesian lines">ID</button>
     <select data-control="body" aria-label="Body mode">
       <option value="target">TARGET</option>
-      <option value="screen" disabled>SCREEN · P4</option>
-      <option value="circle" disabled>CIRCLE · P4</option>
-      <option value="eyes" disabled>EYES · P4</option>
+      <option value="circle">CIRCLE</option>
+      <option value="screen">SCREEN</option>
+      <option value="eyes">EYES</option>
     </select>
+    <label class="morc-size">SIZE <input type="range" data-control="size" min="0.5" max="1.6" step="0.05" value="1"></label>
     <button type="button" data-control="toy" disabled title="Phase 4">+ TOY</button>
   </nav>
 
