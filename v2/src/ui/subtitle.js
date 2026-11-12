@@ -8,9 +8,10 @@ export function createSubtitle(el) {
     if (i >= words.length) { timer = setTimeout(() => el && el.classList.remove('on'), 1600 + words.length * 120); return; }
     const w = words[i++];
     if (el) el.textContent = words.slice(0, i).join(' ');
-    if (onWord) onWord(w, i - 1);
+    const d = onWord ? onWord(w, i - 1) : 0; // the voice returns how long the word takes (s)
     const syl = Math.max(1, (w.match(/[aeiouy]+/gi) || []).length);
-    timer = setTimeout(tick, syl * 140 + (/[.,!?…]$/.test(w) ? 220 : 40));
+    const pause = /[.,!?…]$/.test(w) ? 200 : 20;
+    timer = setTimeout(tick, (d > 0 ? d * 1000 : syl * 140) + pause);
   }
 
   return {

@@ -12,7 +12,7 @@ import { Actor, motion } from '../physics/spring.js';
 const P0 = { wm: 1, hm: 1, r: 11, lt: 0, la: 0, lb: 0, bl: 0, ba: 0, y: 0, gx: 0, rot: 0, hz: 0 };
 const KEYS = Object.keys(P0);
 const SLOW = new Set(['sleepy', 'sleep', 'bored', 'sad']);
-const BASE = [{ x: -33, w: 56, h: 64 }, { x: 33, w: 56, h: 64 }]; // gap ≈ 15 % of eye width
+const BASE = [{ x: -35, w: 56, h: 65 }, { x: 35, w: 54, h: 62 }]; // v1 geometry
 export const GAZE = { x: 20, y: 15 };
 
 const both = (o) => () => o;
@@ -62,7 +62,7 @@ export function createEyes() {
   const st = {
     t: 0, exp: 'neutral', over: [null, null], overUntil: [0, 0], shape: ['neutral', 'neutral'], ant: [0, 0], from: [null, null],
     bk0: 0, bk1: -1, snapAt: -1, nextBlink: 2500, pendBlink: -1, nextSac: 900,
-    shiverUntil: 0, sx: 0, sy: 0, sNext: 0, squash: 0, dizzy: 0, q: [],
+    shiverUntil: 0, sx: 0, sy: 0, sNext: 0, squash: 0, dizzy: 0, anger: 0, q: [],
   };
   const later = (ms, fn) => st.q.push({ at: st.t + ms, fn });
   const target = (name, i) => ({ ...P0, ...EYE_PRESETS[name](i) });
@@ -151,18 +151,18 @@ export function createEyes() {
     let stv = clamp(Math.hypot(gvx, gvy) * 0.0016 - 0.02, 0, 0.08);
     if (gaze.phase === 'ant') stv = -0.09 * gaze.sq;
     const an = Math.atan2(gvy, gvx);
-    const breathe = 1 + Math.sin(t * 0.0016) * 0.012;
+    const breathe = 1;
     const pitch = Math.cos(clamp(ly, -1, 1) * 0.55);              // pitch squashes height
     const merge = bk * 0.42;                                       // blink: both eyes become one wide line
 
     for (let i = 0; i < 2; i++) {
       const b = BASE[i], e = m[i], sg = i ? 1 : -1, inner = -sg;
-      const near = 1 + sg * lx * 0.12;                              // the eye on the look side grows
+      const near = 1 + sg * lx * 0.07;                              // the eye on the look side grows
       const w = b.w * e.wm * near * breathe * (1 + merge) * (1 - clamp((mv[i].hm || 0) * 0.018, -0.08, 0.08));
       const h = Math.max(2, b.h * e.hm * near * breathe * pitch * (1 - bk * 0.92));
       const r = Math.min(e.r, w / 2, h / 2);
       ctx.save();
-      ctx.translate(b.x * (1 - bk * 0.2) + sg * e.gx + gx, e.y + gy + ly * 6);
+      ctx.translate(b.x * (1 - bk * 0.2) + sg * e.gx + gx + st.anger * 2.2 * Math.sin(t * 0.031), e.y + gy + ly * 6 + st.anger * 1.6 * Math.sin(t * 0.027) + Math.sin(t * 0.0019) * 1.3);
       if (Math.abs(stv) > 0.01) { ctx.rotate(an); ctx.scale(1 + stv, 1 - stv * 0.6); ctx.rotate(-an); }
       ctx.rotate(e.rot);
       const a = clamp(1 - e.hz, 0, 1);
@@ -174,8 +174,8 @@ export function createEyes() {
         o.setTransform(1, 0, 0, 1, 0, 0); o.globalCompositeOperation = 'source-over'; o.clearRect(0, 0, cv.width, cv.height);
         o.setTransform(kq, 0, 0, kq, C, C);
         o.fillStyle = color; rr(o, -w / 2, -h / 2, w, h, r); o.fill();
-        if (h > 12) { o.fillStyle = 'rgba(255,255,255,.6)'; rr(o, -w * 0.32, -h * 0.36, w * 0.3, Math.max(2, h * 0.09), 3); o.fill(); }
-        o.globalCompositeOperation = 'destination-out'; o.fillStyle = '#000'; o.shadowColor = '#000'; o.shadowBlur = 6 * kq;
+        if (h > 12) { o.fillStyle = 'rgba(255,255,255,.65)'; rr(o, -w * 0.32, -h * 0.36, w * 0.3, Math.max(2, h * 0.09), 3); o.fill(); }
+        o.globalCompositeOperation = 'destination-out'; o.fillStyle = '#000'; o.shadowColor = '#000'; o.shadowBlur = 5 * kq;
         if (e.lt > 0.01 || Math.abs(e.la) > 0.01) { // top lid
           const y0 = -h / 2 + h * e.lt, sl = (h * e.la / w) * inner;
           o.beginPath(); o.moveTo(-w, -h * 2); o.lineTo(w, -h * 2); o.lineTo(w, y0 + sl * w); o.lineTo(-w, y0 - sl * w); o.closePath(); o.fill();
@@ -215,6 +215,7 @@ export function createEyes() {
     get expression() { return st.exp; },
     set squash(v) { st.squash = v; },
     set dizzy(v) { st.dizzy = v; },
+    set anger(v) { st.anger = v; },
   };
 }
 

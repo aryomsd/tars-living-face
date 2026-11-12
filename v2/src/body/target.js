@@ -21,6 +21,11 @@ const STYLE = { // weights: micro small drift reverse jerk rest · interval scal
 };
 const NAMES = ['micro', 'small', 'drift', 'reverse', 'jerk', 'rest'];
 
+function leash(p, f, max) {
+  const dx = p.x - f.x, dy = p.y - f.y, d = Math.hypot(dx, dy);
+  if (d > max) { p.x = f.x + dx / d * max; p.y = f.y + dy / d * max; p.vx = p.vx * 0.6 + f.vx * 0.4; p.vy = p.vy * 0.6 + f.vy * 0.4; }
+}
+
 export function createBody() {
   const P = () => ({ x: 0, y: 0, vx: 0, vy: 0 });
   const neck = P(), inner = P(), outer = P();
@@ -60,8 +65,8 @@ export function createBody() {
     follow(outer, base.x + (inner.x - base.x) * 0.5, base.y + (inner.y - base.y) * 0.5, 5.5, 0.86, dt);
     const g = Math.hypot(outer.x - inner.x, outer.y - inner.y);
     if (g > GAP) { outer.x = inner.x + (outer.x - inner.x) * GAP / g; outer.y = inner.y + (outer.y - inner.y) * GAP / g; outer.vx *= 0.84; outer.vy *= 0.84; }
-    const dx = face.x - outer.x, dy = face.y - outer.y, d = Math.hypot(dx, dy);
-    if (d > REACH) { const ex = (dx / d) * (d - REACH), ey = (dy / d) * (d - REACH); outer.x += ex; outer.y += ey; inner.x += ex * 0.5; inner.y += ey * 0.5; }
+    // hard leash: the face can never leave its rings, however fast it moves
+    leash(neck, face, 14); leash(inner, face, 28); leash(outer, face, REACH);
     spin[0].s.a.v -= headVx * 0.0003; spin[1].s.a.v += headVx * 0.0002;
     runMotor(0, mood, energy); runMotor(1, mood, energy);
     spin[0].step(dt); spin[1].step(dt);

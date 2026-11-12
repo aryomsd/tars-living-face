@@ -94,7 +94,7 @@ export class Actor {
 // Point mass chained to a goal (neck rings). Velocity-clamped spring.
 export function follow(p, x, y, f, z, dt) {
   const w = TAU * f;
-  p.vx = clamp(p.vx + (w * w * (x - p.x) - 2 * z * w * p.vx) * dt, -2500, 2500);
-  p.vy = clamp(p.vy + (w * w * (y - p.y) - 2 * z * w * p.vy) * dt, -2500, 2500);
+  p.vx = clamp(p.vx + (w * w * (x - p.x) - 2 * z * w * p.vx) * dt, -12000, 12000);
+  p.vy = clamp(p.vy + (w * w * (y - p.y) - 2 * z * w * p.vy) * dt, -12000, 12000);
   p.x += p.vx * dt; p.y += p.vy * dt;
 }
