@@ -39,8 +39,8 @@ export function createRenderer(canvas, onDrop) {
       g1x.clearRect(0, 0, g1.width, g1.height); g1x.drawImage(src, 0, 0, g1.width, g1.height);
       g2x.clearRect(0, 0, g2.width, g2.height); g2x.drawImage(g1, 0, 0, g2.width, g2.height);
       ctx.globalCompositeOperation = 'lighter';
-      ctx.globalAlpha = 0.5; ctx.drawImage(g2, 0, 0, W, H);
-      ctx.globalAlpha = 0.35; ctx.drawImage(g1, 0, 0, W, H);
+      ctx.globalAlpha = 0.85; ctx.drawImage(g2, 0, 0, W, H);
+      ctx.globalAlpha = 0.55; ctx.drawImage(g1, 0, 0, W, H);
       ctx.globalCompositeOperation = 'source-over'; ctx.globalAlpha = 1;
     }
     if (L >= 1 && scan) { ctx.fillStyle = scan; ctx.fillRect(0, 0, W, H); }

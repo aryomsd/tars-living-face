@@ -29,6 +29,7 @@ export class Actor {
     this.keys = Object.keys(init);
     this.s = {};
     for (const k of this.keys) this.s[k] = new Spring(init[k], this.base.f, this.base.z);
+    this.micro = o.micro ?? 3; // below this distance a move steps crisply (units of this actor)
     this.t = 0; this.job = null; this.sq = 0;
   }
   get(k) { return this.s[k].x; }
@@ -47,7 +48,7 @@ export class Actor {
     d = Math.sqrt(d);
     const J = { goal, o, E, d, dir, f: o.f || this.base.f, phase: '', until: 0, held: false };
     this.job = J;
-    if (d < (o.micro ?? 3)) { // micro step: crisp, no wind-up
+    if (d < (o.micro ?? this.micro)) { // micro step: crisp, no wind-up
       this._set(goal, J.f * 1.8, 0.92); J.phase = 'settle'; J.until = this.t + 120 + (o.hold || 0);
       return J;
     }
