@@ -346,6 +346,7 @@ export function mount(host, opts = {}) {
       rpm: body.rpm(), fps: 1000 / renderer.frameMs, vfx: renderer.level, expr: eyes.expression,
       mood: mind.mood + (mind.sulking ? ' (sulk)' : ''), phase: A.body.phase, audio: audio.ready,
     }),
+    _pump: (ms) => loop.pump(ms),
     destroy() { loop.destroy(); ro.disconnect(); subtitle.stop(); canvas.remove(); },
   };
 }

@@ -7,6 +7,7 @@ const settings = Object.assign({ sfx: true, voice: true, ai: false, vfx: true, i
 const save = () => store.set('morc2.settings', settings);
 
 const morc = mount($('[data-morc="stage"]'), { subtitle: $('[data-morc="subtitle"]'), size: settings.size, body: settings.body, lang: settings.id ? 'id' : 'en' });
+window.morc = morc; // F12 access: morc.express('angry'), morc.gesture('hop'), morc._pump(500)
 const statusEl = $('[data-morc="status"]');
 morc.on('status', (s) => { statusEl.textContent = s; });
 

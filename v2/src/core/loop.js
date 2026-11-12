@@ -7,6 +7,9 @@ export function createLoop(step, render) {
 
   function frame(t) {
     raf = requestAnimationFrame(frame);
+    tick(t);
+  }
+  function tick(t) {
     const real = last ? (t - last) / 1000 : H;
     last = t;
     acc += Math.min(real, 0.05); // dt clamp: no spiral after a stall
@@ -30,6 +33,8 @@ export function createLoop(step, render) {
   return {
     start, stop,
     get now() { return now; },
+    // debug: advance `ms` of sim + render synchronously (works while the tab is hidden)
+    pump(ms) { let t = last || performance.now(); const n = Math.ceil(ms / 16.67); for (let i = 0; i < n; i++) { t += 16.67; tick(t); } last = 0; },
     after(ms, fn) { timers.push({ at: now + ms, fn }); },
     destroy() { stop(); document.removeEventListener('visibilitychange', onVis); timers.length = 0; },
   };

@@ -208,7 +208,7 @@ function eyePath(c, w, h, sg, r, ti, to, bi, bo, tb, bb, tw, bw, sk) {
   for (let i = 0; i < 4; i++) {
     const j = (i + 1) % 4, A = OUT[i], B = IN[j], dx = B[0] - A[0], dy = B[1] - A[1], l = Math.hypot(dx, dy) || 1;
     // bulge scales with how much straight edge is left after corner rounding (no spikes on round eyes)
-    const full = Math.hypot(P[j][0] - P[i][0], P[j][1] - P[i][1]) || 1, bg = bul[i] * 2 * Math.min(1, (l / full) * 1.6);
+    const full = Math.hypot(P[j][0] - P[i][0], P[j][1] - P[i][1]) || 1, r2 = l / full, bg = r2 < 0.25 ? 0 : bul[i] * 2 * Math.min(1, r2 * 1.6);
     c.quadraticCurveTo((A[0] + B[0]) / 2 + (dy / l) * bg, (A[1] + B[1]) / 2 - (dx / l) * bg, B[0], B[1]);
     c.quadraticCurveTo(P[j][0], P[j][1], OUT[j][0], OUT[j][1]);
   }
