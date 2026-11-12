@@ -7,6 +7,28 @@ A charming desk-companion character in the spirit of Cozmo: cute enough that eve
 sarcastic enough for adults. Ships as a **playable module inside the AKAKBURGER GOTW / Member Hub app**.
 "Clone of Cozmo" = same *feel* (emotion, timing, body language, voice style). See IP note below.
 
+## Decisions — round 2 (Aryo, 2026-11-12) — these override anything below
+- **Standalone first.** Build the best MORC experience as a self-contained module. No GOTW / Member Hub
+  specifics until later; the embed API (phase 7) stays generic. Note: GOTW (`aryomsd/akak-get-on-the-wall`)
+  is the future host, not Member Hub V14.
+- **No text bubbles.** One **subtitle line below the canvas** shows what MORC "means". It types in sync
+  with the babble syllables. Shown sparingly — not for every noise.
+- **Speech = 3 layers, Cozmo style, English** (Indonesian optional via a toggle on the subtitle/line pool):
+  1. *Babble* — WebAudio synth, always, instant. Carries the emotion.
+  2. *Spoken words* — rare signature words/short phrases ("Hey!", "Nope.", "Burger?", "Uh-oh", "Again!",
+     "Night night"). ~30–60 clips rendered ONCE (Workers AI TTS → robot filter), cached, instant playback.
+     Scarcity is the point.
+  3. *Subtitle* — the full sarcastic line, word-synced to the babble.
+  - *User's name* (opt-in): typed once, rendered once via TTS when online, cached in localStorage; babble fallback.
+  - Live AI chat stays an optional later layer (default off).
+- **UI styling is done by Aryo in parallel.** Engine exposes plain DOM + CSS variables (`--morc-*`) and
+  `data-morc` hooks only. Neutral look like v1 until his design lands.
+- **Character bible (phase 0, `docs/morc-v2/CHARACTER.md`):** burger-joint bot; proud, food-motivated
+  (burger treat = weakness); easily offended, quick to forgive; secretly needy. Sarcasm targets itself and
+  the situation — never the user's looks/photo/body. Kid-safe.
+- **Mind additions:** a *drives* layer (play / attention / rest) so MORC initiates behaviour unprompted;
+  behaviour selector with cooldowns + no-repeat; **sulk is bounded** (≤10–15 s, always a recovery path).
+
 ## Aryo's requirements (verbatim intent, numbered as he gave them)
 1. Voice similar to Cozmo (babble/vocalisations, not human TTS).
 2. Translate Cozmo's physical gestures onto MORC's ring neck/body.
@@ -134,13 +156,14 @@ Vanilla JS ES modules, no framework. Optional one-step esbuild bundle → `dist/
 - `embed/` — `<morc-bot worker-url member-id body-mode>`, plus a postMessage API for the host app.
 
 ## Build phases (one PR each; Aryo merges with "merge N")
-1. Skeleton: loop, springs + `act()`, Target body, eyes port, UI shell + toggles, VFX render.
-2. Mind + interactions (pokes/pet/fling/idle/sleep), with posture and gesture map wired to mood.
-3. Audio: SFX + babble voice, mapped to mood.
-4. Body modes Circle / EyesOnly / Screen, plus toys (ball first).
+0. Character bible (`CHARACTER.md`) + line pool skeleton; motion-tuning lab ships inside phase 1.
+1. Skeleton: loop, springs + `act()`, Target body, eyes port, UI shell + toggles, VFX render, motion lab.
+2. Mind (stats + drives + behaviour selector) + interactions (pokes/pet/fling/idle/sleep), posture/gestures wired to mood.
+3. Audio: SFX + babble voice + subtitle typer + speech scheduler (when to talk, cooldowns, no repeats), mapped to mood.
+4. Body modes Screen + Circle first (EyesOnly later), plus toys (ball first).
 5. Per-user memory + trait drift.
-6. AI speech (Worker, opt-in, rate-limited).
-7. Embed package + integration notes for Member Hub (no Member Hub changes from this repo).
+6. Spoken word clips (pre-rendered once) + opt-in user name; then optional live AI chat (Worker, rate-limited).
+7. Generic embed package (`<morc-bot>`, `MORC.mount()`, postMessage). Host integration happens in the host repo.
 
 ## Keep / drop from v1
 - **Keep:** the eye renderer approach, the R2.41/R2.42 motion numbers, the neck-ring physics, the Worker
