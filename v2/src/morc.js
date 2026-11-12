@@ -29,7 +29,7 @@ export function mount(host, opts = {}) {
   const status = (s) => emit('status', s);
 
   const cfg = { size: opts.size || 1, mode: opts.body || 'target', lang: opts.lang || 'en' };
-  const renderer = createRenderer(canvas, (l) => status('VFX AUTO-DROP → ' + ['flat', 'scan', 'glow', 'full'][l]));
+  const renderer = createRenderer(canvas, (l) => status('VFX AUTO-DROP → ' + ['flat', 'scan', 'glow'][l]));
   const subtitle = createSubtitle(opts.subtitle || null);
   const eyes = createEyes(), body = createBody(), mind = createMind(), audio = createAudio();
 
@@ -42,14 +42,14 @@ export function mount(host, opts = {}) {
   };
   const face = { x: 0, y: 0, vx: 0, vy: 0 }, post = { x: 0, y: 0 };
   const view = { w: 1, h: 1, S: 1 };
-  const colors = { eye: '#4be8f0', ring: '#8be3e7', ring2: '#4a8f9a', bg: '#020c10' };
+  const colors = { eye: '#4be8f0', glow: '#57f4fa', ring: '#8be3e7', ring2: '#4a8f9a', bg: '#020c10' };
   const S = { dizzy: 0, exprUntil: 0, lastTalk: -9e9, recent: [], press: null, drag: false, hist: [], lastLook: 0, hover: false, lastHover: 0, petTalk: false, side: 1 };
   let loop;
 
   function theme() {
     const cs = getComputedStyle(host), v = (k, d) => (cs.getPropertyValue(k) || '').trim() || d;
     colors.eye = v('--morc-eye', colors.eye); colors.ring = v('--morc-ring', colors.ring);
-    colors.ring2 = v('--morc-ring-2', colors.ring2); colors.bg = v('--morc-bg', colors.bg);
+    colors.ring2 = v('--morc-ring-2', colors.ring2); colors.bg = v('--morc-bg', colors.bg); colors.glow = v('--morc-glow', colors.glow);
   }
   function resize() {
     const r = host.getBoundingClientRect();
@@ -84,6 +84,8 @@ export function mount(host, opts = {}) {
     loop.after(70, () => A.head.act({ x: clamp(x * 0.45, -36, 36), y: clamp(y * 0.4, -24, 24) }, { windup: 0.3, overshoot: 0.12, ...o }));
   }
   function express(name, ms = 0) { eyes.setExpression(name); S.exprUntil = ms ? loop.now + ms : 0; }
+  // the body's intended rest position (ignores a wind-up goal in flight — prevents drift)
+  const home = (k) => { const J = A.body.job; return J && J.goal[k] != null ? J.goal[k] : A.body.goal(k); };
   const seq = (steps) => { let t = 0; for (const [w, fn] of steps) { t += w; loop.after(t, fn); } };
 
   // Travel: look first, wind up (lean back + ring counter-spin), go, overshoot, settle.
@@ -108,15 +110,15 @@ export function mount(host, opts = {}) {
 
   const GESTURES = {
     hop() {
-      A.body.act({ y: A.body.goal('y') - 34 }, { windup: 0.4, windupHold: 70, overshoot: 0.06, f: 5 });
+      const y0 = home('y'); // land where we started
+      A.body.act({ y: y0 - 34 }, { windup: 0.4, windupHold: 70, overshoot: 0.06, f: 5 });
       A.lift.act({ l: -0.9 }, { windup: 0, f: 8 });
-      const y0 = A.body.goal('y') + 34;
       seq([[220, () => A.lift.act({ l: 0.5 }, { windup: 0, f: 7 })],
         [180, () => { A.body.act({ y: y0 }, { windup: 0, overshoot: 0.2, f: 6 }); A.lift.act({ l: -0.6 }, { windup: 0, f: 9 }); audio.sfx('boop'); }],
         [160, () => A.lift.act({ l: 0 }, { windup: 0, overshoot: 0.25, f: 6 })]]);
     },
     wiggle() {
-      const s = S.side = -S.side, x0 = A.body.goal('x');
+      const s = S.side = -S.side, x0 = home('x');
       [0.16, -0.16, 0.12, -0.08, 0].forEach((a, k) => loop.after(k * 130, () => A.tilt.act({ a: a * s }, { windup: k ? 0.12 : 0.3, f: 7, overshoot: k === 4 ? 0.15 : 0.1 })));
       seq([[0, () => A.body.act({ x: x0 + 6 * s }, { f: 7 })], [260, () => A.body.act({ x: x0 - 6 * s }, { f: 7 })], [260, () => A.body.act({ x: x0 }, { f: 6 })]]);
       eyes.setSpread(4); loop.after(650, () => eyes.setSpread(0));
@@ -132,7 +134,7 @@ export function mount(host, opts = {}) {
         [170, () => A.head.act({ y: 0 }, { windup: 0, overshoot: 0.15 })]]);
     },
     refuse() {
-      const s = S.side = -S.side, x0 = A.body.goal('x');
+      const s = S.side = -S.side, x0 = home('x');
       express('annoyed', 2000); look(48 * s, 4); body.kick(s, 0.8);
       A.body.act({ x: x0 + 30 * s }, { windup: 0.35, f: 3.5, tempo: 1.2 });
       A.tilt.act({ a: 0.12 * s }, { windup: 0.3 });
@@ -302,12 +304,13 @@ export function mount(host, opts = {}) {
     }
 
     const fx = A.body.get('x') + A.head.get('x') + post.x, fy = A.body.get('y') + A.head.get('y') + post.y;
+    if (!Number.isFinite(fx + fy)) { for (const k in A) for (const q of A[k].keys) { A[k].s[q].x = A[k].s[q].goal = 0; A[k].s[q].v = 0; } return; }
     face.vx = (fx - face.x) / dt; face.vy = (fy - face.y) / dt; face.x = fx; face.y = fy;
     body.step(dt, face, { x: A.body.get('x'), y: A.body.get('y') }, A.head.s.x.v + A.body.s.x.v * 0.3, mind.mood, mind.s.energy);
     audio.servo(A.body.speed() + A.head.speed() * 0.4 + Math.abs(A.depth.s.z.v) * 300, now);
   }
 
-  function drawScene(g) {
+  function drawScene(g, L) {
     const bx = A.body.get('x'), by = A.body.get('y'), k = zs();
     g.save();
     g.translate(view.w / 2, view.h / 2); g.scale(view.S, view.S);
@@ -319,7 +322,7 @@ export function mount(host, opts = {}) {
     const sq = Math.max(A.head.sq, A.body.sq), amt = clamp(Math.hypot(face.vx, face.vy) * 0.00022, 0, 0.08);
     if (amt > 0.005) { const an = Math.atan2(face.vy, face.vx); g.rotate(an); g.scale(1 + amt, 1 - amt * 0.6); g.rotate(-an); }
     if (sq > 0.01) g.scale(1 + sq * 0.07, 1 - sq * 0.09);
-    eyes.draw(g, colors.eye, (A.head.get('x') + post.x) / 36, (A.head.get('y') + post.y) / 24);
+    eyes.draw(g, colors.eye, colors.glow, (A.head.get('x') + post.x) / 36, (A.head.get('y') + post.y) / 24, L >= 2);
     g.restore();
   }
 

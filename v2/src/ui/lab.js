@@ -52,7 +52,7 @@ setInterval(() => {
   const h = morc.hud();
   ro.innerHTML = [
     ['VER', VERSION], ['XYZ', `${f(h.x)},${f(h.y)},${f(h.z, 2)}`], ['TILT', f(h.tilt, 2)], ['LIFT', f(h.lift, 2)],
-    ['RPM', h.rpm.join(':')], ['FPS', f(h.fps)], ['VFX', ['FLAT', 'SCAN', 'GLOW', 'FULL'][h.vfx]], ['MOOD', h.mood.toUpperCase()],
+    ['RPM', h.rpm.join(':')], ['FPS', f(h.fps)], ['VFX', ['FLAT', 'SCAN', 'GLOW'][h.vfx]], ['MOOD', h.mood.toUpperCase()],
     ['EXPR', h.expr.toUpperCase()], ['BODY', settings.body.toUpperCase()], ['AUDIO', h.audio ? 'ON' : 'TAP TO START'],
   ].map(([k, v]) => `<span>${k} <b>${v}</b></span>`).join('');
   st.innerHTML = Object.entries(morc.stats).map(([k, v]) => `<span>${k.toUpperCase()}<i><i style="width:${Math.round(v * 100)}%"></i></i></span>`).join('');
